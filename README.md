@@ -42,3 +42,5 @@ Default credentials are
 Username -> admin
 
 Password -> admin
+
+PS : You can use git GUI clients such as GitKraken or SourceTree to manage your projects.
