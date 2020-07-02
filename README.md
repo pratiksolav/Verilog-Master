@@ -19,7 +19,7 @@ Then follow these steps
 $ pip3 install virtualenv
 $ mkdir verilog-master
 $ cd verilog-master
-$ git clone https://github.com/codingforentrepreneurs/Reactify-Django .
+$ git clone https://github.com/Rushikesh1008/Verilog-Master.git .
 $ virtualenv -p python3 .
 $ source bin/activate   #For MAC/Linux -> . bin/activate
 (verilog-master) $ pip3 install -r requirements.txt
