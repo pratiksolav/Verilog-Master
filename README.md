@@ -1,22 +1,19 @@
 # Verilog Master
 
+![](https://img.shields.io/github/license/CybSec-NITW/WeaponHEX)
+![](https://img.shields.io/pypi/pyversions/django.svg)
+
 Verilog is a hardware descriptive language used to model modern day digital systems like flip-flops, memories and microprocessors. It is a very powerful tool to design and simulate digital hardwares at any level.
 
 This project is about providing an interactive environment for hardware enthusiasts to learn this language.
 
-## Requirements
-- Git
-- Python3
-- Pip3
-
 ## Instructions
 
-Make sure you have Git and Python installed on your machine 
-(If not,install from here https://git-scm.com/downloads https://www.python.org/downloads/ )
+Make sure you have Git and Python installed on your machine. If not, you can download and install them from here: https://git-scm.com/downloads https://www.python.org/downloads/
 
-Open a terminal and change current directory to your dev or projects folder
+Open a terminal and change current directory to your dev or projects folder.
 
-Follow these steps
+Then follow these steps
 
 ```
 $ pip3 install virtualenv
