@@ -14,20 +14,15 @@ Make sure you have Git and Python installed on your machine. If not, you can dow
 Open a terminal and change current directory to your dev or projects folder.
 
 Then follow these steps
-
 ```
 $ pip3 install virtualenv
 $ mkdir verilog-master
-$ cd verilog-master
-$ git clone https://github.com/Rushikesh1008/Verilog-Master.git .
+$ cd verilog-maste
+r$ git clone https://github.com/Rushikesh1008/Verilog-Master.git .
 $ virtualenv -p python3 .
-$ source bin/activate   #For MAC/Linux -> . bin/activate
-(verilog-master) $ pip3 install -r requirements.txt
-(verilog-master) $ cd src
-(verilog-master) $ python3 manage.py makemigrations
-(verilog-master) $ pyton3 manage.py migrate
-(verilog-master) $ python3 manage.py runserver
-
+$ .\Scripts\activate                                #For MAC/Linux -> . bin/activate(verilog-master) $ pip3 install -r requirements.txt(verilog-master) 
+$ cd src(verilog-master) 
+$ python manage.py makemigrations  #For MAC/Linux -> python3 manage.py makemigrations(verilog-master) $ python manage.py migrate         #For MAC/Linux -> python3 manage.py migrate(verilog-master) $ python manage.py runserver       #For MAC/Linux -> python3 manage.py runserver
 It will deploy the website on your localhost https://127.0.0.1:8000
 ```
 
@@ -35,12 +30,12 @@ It will deploy the website on your localhost https://127.0.0.1:8000
 
 Django provides a default admin interface which can be used to perform create, read, update and delete operations on the models and manage users directly.
 
-Open https://127.0.0.1:8000/admin
+```
+Go to directory containing manage.py file and enter the following command to create a new superuser
 
-Default credentials are
+$ python manage.py createsuperuser
 
-Username -> admin
-
-Password -> admin
+Enter the details. After successful creation open https://127.0.0.1:8000/admin and use your login credentials.
+```
 
 PS : You can use git GUI clients such as GitKraken or SourceTree to manage your projects.
