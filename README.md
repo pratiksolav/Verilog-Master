@@ -15,14 +15,17 @@ Open a terminal and change current directory to your dev or projects folder.
 
 Then follow these steps
 ```
-$ pip3 install virtualenv
+$ pip install virtualenv
 $ mkdir verilog-master
-$ cd verilog-maste
-r$ git clone https://github.com/Rushikesh1008/Verilog-Master.git .
+$ cd verilog-master
+$ git clone https://github.com/Rushikesh1008/Verilog-Master.git .
 $ virtualenv -p python3 .
-$ .\Scripts\activate                                #For MAC/Linux -> . bin/activate(verilog-master) $ pip3 install -r requirements.txt(verilog-master) 
-$ cd src(verilog-master) 
-$ python manage.py makemigrations  #For MAC/Linux -> python3 manage.py makemigrations(verilog-master) $ python manage.py migrate         #For MAC/Linux -> python3 manage.py migrate(verilog-master) $ python manage.py runserver       #For MAC/Linux -> python3 manage.py runserver
+$ .\Scripts\activate                               #For MAC/Linux -> . bin/activate
+(verilog-master) $ pip install -r requirements.txt
+(verilog-master) $ cd src
+(verilog-master) $ python manage.py makemigrations #For MAC/Linux -> python3 manage.py makemigrations
+(verilog-master) $ python manage.py migrate        #For MAC/Linux -> python3 manage.py migrate
+(verilog-master) $ python manage.py runserver      #For MAC/Linux -> python3 manage.py runserver
 It will deploy the website on your localhost https://127.0.0.1:8000
 ```
 
