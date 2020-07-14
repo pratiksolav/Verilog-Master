@@ -9,3 +9,6 @@ def intro1(request):
 
 def intro2(request):
     return render(request,'intro2.html')
+
+def digital_basics(request):
+    return render(request,'digital-basics.html')
