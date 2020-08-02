@@ -10,6 +10,7 @@ __pycache__/
 .Python
 pyvenv.cfg
 bin/
+Scripts/
 build/
 develop-eggs/
 include/
@@ -139,4 +140,3 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-
