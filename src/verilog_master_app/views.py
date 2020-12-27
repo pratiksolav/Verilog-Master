@@ -29,3 +29,6 @@ def verilogbasics1(request):
 
 def digital_basics(request):
     return render(request,'digital-basics.html')
+
+def modules_and_port_mappings(request):
+	return render(request, 'modules-and-port-mappings.html')
