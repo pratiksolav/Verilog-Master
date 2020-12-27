@@ -24,5 +24,8 @@ def intro1(request):
 def intro2(request):
     return render(request,'intro2.html')
 
+def verilogbasics1(request):
+	return render(request, 'verilog-basics-1.html')
+
 def digital_basics(request):
     return render(request,'digital-basics.html')
