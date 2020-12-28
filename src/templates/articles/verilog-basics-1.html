@@ -1,0 +1,314 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Verilog Basics-I
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Verilog Basics 1</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Verilog Basics - I</h1>
+      <hr>
+      <p id="Intro">Just like any other programming languages you might have come across, Verilog also has some basic stuff that needs to be understood before attempting to code. First of all, to work with any algorithm, be it in any programming language, what do we need? Some variables which can hold the required data values. In other words, one must understand the data types a language provides. Keeping this in mind, we present an overview of the various data types in Verilog. <!-- <strong>Why Verilog?</strong></p>-->
+      
+      <p><u><b>Note: -</b></u></p>
+      
+      <p id="Pressure Cooker">There are a lot of concepts which are interrelated. One cannot be explained fully without knowledge of the other. In spite of the best of our efforts, some terms may creep into the explanation. Don’t worry. For this, we have designed a <b>‘Pressure Cooker’(PC)!</b> This is simply a box containing all terms in the article, which cannot be explained yet, but which are required for full understanding. We will show it at the end of each article, so you can track them, and when we explain later, co-relate.
+      </p>
+      
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">Data Types: -</h3>
+      
+      <p id="DataTypes">Broadly, there are two data types here- Net and Register. Let us start with ‘Nets’.</p>
+      <h><u><b>Nets: -</b></u></h>
+      <p id="Nets">If you remember from the first introductory article, we gave hints to some features, which differentiate HDLs from other software languages. This is one of them.</p>
+
+      <p>A ‘net’ in Verilog is a data type which represents a continuously driven quantity. This means, the variables belonging to type ‘net’ need to be assigned (or driven) with some value at all instants of time. These variables cannot store a value, rather they take something which is provided to them continuously throughout the execution of the code.</p>
+
+      <p>In hardware modelling, we often need such variables to denote physical connections. You can relate them as something that holds value till the power (or the driver signal) is supplied. <u>In the absence of a driving signal, the variable assumes a high impedance state, denoted by ‘z’.</u>(We will come to this in a while ☺. <i>PC-1</i>)</p>
+
+      <p>Strictly speaking, ‘net’ is a keyword, which holds several data types, as discussed below:
+        <li><u>wire</u></li>
+        This is the most common net data type, and also the one you will use most frequently as a beginner. It represents a physical wired connection between two ports of hardware units. Consider this simple AND gate.
+      <div class="row my-5">  
+        <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/gate-and1.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 2-Input AND gate</h5>
+        </div>
+        <div class="col-md-6">
+<pre><code>
+  wire X; <br>
+  assign X = A & B; //'assign' used for continuous assignment. <i>PC-2</i> <br> 
+</code></pre>
+        </div>
+      </div>
+      Here the output X can be a wire, since the signal at the output port of the gate directly drives ‘X’ at all times. Have a glimpse at the code snippet.  <br><br>
+        <li><u>wand</u></li>
+        This stands for wired-AND. This is useful in cases when there are two signals driving the net variable. If the variable is declared as a wand, the two driving signals are AND-ed, the result of AND operation drives the variable.<br>
+        e.g. In CMOS technology, if outputs of 2 CMOS gates are shorted together, the output will behave as a ‘wand’ type. We won’t go into the details here.<br>
+      <div class="row my-5">  
+        <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/wiredand.jpg"%}" alt="">
+            <h5 class="text-center">Fig. wired AND</h5>
+        </div>
+        <div class="col-md-6">
+            wand X;<br>
+            assign X=A;<br>
+            assign X=B;<br>
+        </div>
+      </div>
+      <li><u>wor</u></li>
+        This stands for wired-OR. Only difference from a wand is that an OR gate is used instead of AND. The resultant variable gets the OR of the two drivers.<br><br>
+      <li><u>tri</u></li>
+        Whenever there are multiple signals driving a single net, the net is declared as type ‘tri’. In case of any logic ambiguity, strength level of the driver is used (Strength level added as <i>PC-3</i>). Consider this code snippet: -<br><br>
+        wire a, b, control;<br>
+        tri y;<br>
+        bufif0 G1(y, a, control);//bufif is a predefined logic gate in Verilog. <i>PC-4</i><br>
+        bufif1 G2(y, b, control);<br><br>
+        Here input a drives the output if control is logic 0, and input b drives the output if control is logic 1.<br><br>
+
+        There are also some other net types, such as trior, triand, trireg, tri0, tri1. For most of your modelling, you may not need them. So you can skip through these. Still, we wind them up with short descriptions (can be found at Xilinx documentation): -<br>
+        <ul>
+          <li>The tri0 and tri1 model nets with resistive pulldown and resistive pullup devices on them. When no driver drives a tri0 net, its value is 0. When no driver drives a tri1 net, its value is 1. The strength of this value is pull.</li>
+          <li>trior and triand work the same as wor and wand.</li>
+          <li>The trireg net stores a value and is used to model charge storage nodes. A trireg can be one of two states: -
+            <ol>
+              <li>Driven State: When one or more drivers of a trireg has a value of 1, 0, or x; the value spreads into the trireg and is the driven value of a trireg. The strength of a trireg in the driven state is strong, pull, or weak depending on the strength of the driver.</li>
+              <li>Capacitive State: When all the drivers of a trireg net are at the high-impedance value (z), the trireg net retains its last driven value; the high-impedance value does not spread from the driver to the trireg. The strength of the value on the trireg net in the capacitive state is small, medium, or large, depending on the size specified in the declaration of the trireg.</li>
+            </ol>
+          </li>
+        </ul>
+      </p>
+      <h><u><b>Registers: -</b></u></h>
+      
+      <p id="Registers">Registers are similar to variables in C. They store a value, and retain that as long as they are not overridden with another value. Do NOT confuse these with hardware registers. These refer to just variables that store some value. Unlike nets, no driver is required for register type variables. Their values can be changed anytime by giving a new value.</p>
+      <p>Register data types can only be used in procedural assignment, which will be explained in behavioural modelling (Add procedural assignment as <i>PC-5</i>). In all the below code snippets, the assignment statements are procedural. When no value is assigned, the default value is ‘x’(unknown). Don’t worry, this will be clear to you in a while.</p>
+      <p>Strictly speaking, ‘register’ is a keyword, which holds several data types, as discussed below: -</p>
+      <li><u>reg</u></li>
+      This is the most frequently used register data type. It is used to denote any signal without a driver, which needs to hold a value. This is often useful, in hardware modelling since we may need that signal value for some later computation. It is treated as an unsigned number in arithmetic expressions.<br>
+      wire a, b;<br>
+      reg y;<br>
+      y=a & b;//This is procedural assignment. Will be explained in <a href="#">Behavioral Modelling</a>.<br>
+      <br>
+      <li><u>integer</u></li>
+      This is similar to ‘int’ data type in C, but here the keyword is ‘integer’. It can only store an integer value. By default, it is treated as a 32 bit 2’s complement signed integer. A variable of integer type is most commonly used for counting the execution of loops such as for, while, etc. Loops shall be explained later in behavioural modelling.<br>
+      integer count;<br>
+      for(count=1; count<=10; count=count+1);<br>
+      &emsp;a=count;<br>
+      <br>
+      <li><u>real</u></li>
+      As the name suggests, it is used to store floating point numbers. In case any real variable is assigned to an integer, it is rounded off.<br>
+      real pi;<br>
+      pi=314.15e-2;//both scientific and normal decimal notations can be used<br>
+      <br>
+      <li><u>time</u></li>
+      Variables of ‘time’ data type are exclusively used to store system simulation time.<br>
+      time current_time;<br>
+      current_time = $time;//<i>'$time'</i> gives the system simulation time.<br>
+    </p>
+    <p id="Synthesis_example"><u><b>Note: -</b></u></p>
+    <p>The Verilog code can be synthesised into a hardware circuit, by the software tool, as we will show later. During synthesis, a ‘net’ variable maps to a physical wire, but a ‘register’ variable may be mapped to either a physical wire or a storage cell. Usually when there is incomplete specification, a storage cell(<a href="#">latch</a>) may be generated. See the code below: -<br>
+      begin<br>
+      &emsp;if(!load)<br>     
+      &emsp; &emsp; t=data;<br>     
+      &emsp; &emsp; d_out=!t;<br>                     
+      end<br>
+      /* If load =0, we have a value for t. But for load =1, no else condition is given. Hence a latch is generated to retain previous t value. */<br>
+    </p>
+
+    <h><u><b>Parameters: -</b></u></h>
+    <p id="Parameters">Parameters are used to specify constants inside a Verilog Code. They are initialised at the time of declaration, and remain constant throughout the code. This is very useful as it allows for flexible codes. For e.g. We can include a parameter N for an N-bit counter, and change N as per our requirement.</p>
+    parameter N=8;<br>
+    reg count[N-1:0];//reg count[0:N-1] also acceptable.<br>
+    /* count is a reg type <i>vector</i>. Vectors explained in the next section. */
+    <br>
+    <br>
+    <u>This ends our discussion of the basic data types. Now using these types, we can define single bit width variables, or multiple width variables, namely vectors and arrays.</u><br><br>
+
+    <h><u><b>Vectors: -</b></u></h>
+    <p id="Vectors">Vectors are multiple bit width variables. The bit indexes are numbered from 0 to    N-1, where N is the bit size or the width of the vector variable. Note that vector is NOT a data type. Rather it is a collected entity of data of any one type, as discussed in the previous section.<br>
+    Now both the two extreme index numbers can be either the Most Significant Bit(MSB) or the Least Significant Bit(LSB). But the vector range is always seen as [MSB:LSB]. The MSB index might be 0 or N-1. Same for LSB index. See the parameter code  above.
+    </p>
+    <u>Accesing Vector Data: -</u><br>
+    Each individual bit, or any number of consecutive bits can be accessed in a vector. While selecting more than one bits:- the order must go from MSB side to LSB side, irrespective of whether MSB has 0 or N-1 index. In the below code, ‘b’ cannot be assigned as count[2:5].<br>
+    <br>
+    parameter N=8;<br>
+    reg count[N-1:0];<br>
+    reg a;<br>
+    reg [3:0] b;//4-bit vector<br>
+    a=count[0];<br>
+    b=count[5:2];<br>
+    <br>
+
+    <h><u><b>Arrays: -</b></u></h>
+    <p id="Arrays">Arrays are multiple entities that are either 1-bit or N-bit wide. Only reg, integer, and time types can support arrays. Multiple bit width arrays are constructed using vectors. Think of these as a rectangular grid, where the number of columns are equal to the number of bits in the vector, and each individual row represents a vector. In arrays, we can only access the entire row as a single entity. We cannot access directly a single element.
+    <u>Also, multi-dimensional arrays are not allowed in Verilog.</u>
+    Arrays are very useful in designing memories.
+    </p>
+    e.g. reg [15:0] memory_element[0:1023]<br>
+    This declares a total of 1024 memory elements, each of which can be thought of as 16-bit wide vectors.<br>
+    memory_element[0] gives a 16-bit vector in the first row.<br>
+    <p align="center">******************</p>
+    <p>Well done! By now, you know all the basic data types in Verilog, along with some exposure to code snippets. Let this float around in your subconscious, till we start up on the coding. ☺</p>
+    <p>Uhh! So many things, so many terms! Our pressure cooker must be quite a lot by now. How about we release some of that pressure XD?</p>
+    
+    <h id="ValueSet"><u><b>Value Set: - (Time to release PC-1)</b></u></h>
+    Now, you might have heard of logic LOW and logic HIGH in digital circuitry. In Verilog, the variables can have four values, viz.
+    <ol>
+      <li>‘0’: Logic Zero, or False as we say in Boolean Algebra</li>
+      <li>‘1’: Logic One, or True </li>
+      <li>‘x’: An unknown value. May be either ‘0’ or ‘1’</li>
+      <li>‘z’: A high impedance state</li>
+    </ol>
+    <p>This four logic system is crucial for hardware modelling. After all, logic ‘0’ or ‘1’ is nothing but a range of voltages at the chip level. If the voltage does not fall in the required range, or there is no clear-cut distinction in the voltage bands specifying high or low logic, we need to tell the hardware to prepare for such a case. This is done by the ‘x’ or unknown logic value.</p>
+    <p>Similarly, when there is no driver to the wires, or some other cases, the wire can be in a high impedance state, i.e. no high or low logic output.</p>
+    <b><u>Remember that nets are ‘z’ by default, whereas registers are ‘x’ by default.</u></b>
+    The next, which is the last section of this article will give you some insights about strength levels of variables.<br><br>
+
+    <h><u><b>Strength Levels in Verilog: - (Time to release PC-3!)</b></u></h>
+
+    <p id="StrengthLevels">You might be thinking, “I already covered types of variables right, what is this then, further sub-categorisation?”. Well no. Think of it this way, when we talk about a net being assigned some value, what exactly does it mean at the hardware level. After all, Verilog is an HDL, so at each point, you must try to relate to the hardware implementation.</p>
+
+    <p>The wires in the final chip carry voltages, i.e. a voltage difference is established throughout the length, and depending upon this voltage that reaches at a particular point in the circuit (the variable), we interpret that as the variable having a high or low logic value. So depending upon the source signal, a wire can receive different strengths(or, voltage values). The stronger signal ultimately drives the wire. This helps in accurate modelling of nets in some cases, e.g. MOS circuits, logic disagreement caused by multiple drivers, etc.</p>
+
+    <p><b>Note: - Strength levels are used only for nets.</b></p>
+
+    Verilog supports eight strength levels as given below: -<br>
+    <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th>Strength Level</th>
+                <th>Type</th>
+                <th>Degree</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>supply</th>
+                <th>Driving</th>
+                <th>Strongest</th>
+              </tr>
+              <tr>
+                <th>strong</th>
+                <th>Driving</th>
+                <th rowspan="6">&nbsp;</th>
+              </tr>
+              <tr>
+                <th>pull</th>
+                <th>Driving</th>
+              </tr>
+              <tr>
+                <th>large</th>
+                <th>Storage</th>
+              </tr>
+              <tr>
+                <th>weak</th>
+                <th>Driving</th>
+              </tr>
+              <tr>
+                <th>medium</th>
+                <th>Storage</th>
+              </tr>
+              <tr>
+                <th>small</th>
+                <th>Storage</th>
+              </tr>
+              <tr>
+                <th>highz</th>
+                <th>High Impedance</th>
+                <th>Weakest</th>
+              </tr>
+            </tbody>
+    </table>
+    <br>
+    
+    <p id="DrivingvsStorage"><b><u>Difference between driving and storage strengths: -</u></b></p>
+    <ul>
+      <li>Driving strengths (supply, strong, pull, weak) are used for the signals that propagate from the outputs of Verilog gates, or outputs of continuous assignment.</li>
+      <li>Storage strengths (large, medium, small) are used for the modelling of charge storage signals(trireg!). Feel free to go back to the short description on <a href="#">Trireg</a>.</li>
+    </ul>
+    <br>
+    
+    <p>As we wind up, remember <a href="#">tri</a> data type? We talked about logic ambiguity. What if, in the example, both the drivers simultaneously drove the buffer outputs (they were shorted). In that case there must be some strength level to differentiate the two. <u>If both are of the same strength, the result is ‘x’ (unknown). Remember this.</u>
+    </p>
+    <p><b>Congratulations!</b> Although this might have been a bit tedious for you, if you managed this far, you have completed about 30% of Verilog Basics, which are crucial for coding in this language. Now, the Pressure Cooker!!</p>
+
+
+    <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th>S.No.</th>
+                <th>Term</th>
+                <th>Clarity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>PC-1</th>
+                <th>High Impedance State 'z'</th>
+                <th>YES</th>
+              </tr>
+              <tr>
+                <th>PC-2</th>
+                <th>'assign' Keyword</th>
+                <th>Will be cleared in <a href="#">Behavioral Modelling</a></th>
+              </tr>
+              <tr>
+                <th>PC-3</th>
+                <th>Strength Levels</th>
+                <th>YES</th>
+              </tr>
+              <tr>
+                <th>PC-4</th>
+                <th>bufif GATE</th>
+                <th>Will be cleared in <a href="#">Digital Basics</a></th>
+              </tr>
+              <tr>
+                <th>PC-5</th>
+                <th>Procedural Assignment</th>
+                <th>Will be cleared in <a href="#">Behavioral Modelling</a></th>
+              </tr>
+              
+            </tbody>
+    </table>
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#DataTypes" class="list-group-item list-group-item-action bg-light">Data Types</a>
+        <a href="#Nets" class="list-group-item list-group-item-action bg-light">Nets</a>
+        <a href="#Registers" class="list-group-item list-group-item-action bg-light">Registers</a>
+        <a href="#Parameters" class="list-group-item list-group-item-action bg-light">Parameters</a>
+        <a href="#Vectors" class="list-group-item list-group-item-action bg-light">Vectors</a>
+        <a href="#Arrays" class="list-group-item list-group-item-action bg-light">Arrays</a>
+        <a href="#ValueSet" class="list-group-item list-group-item-action bg-light">Value Set</a>
+        <a href="#StrengthLevels" class="list-group-item list-group-item-action bg-light">Strength Levels</a>
+        <a href="#DrivingvsStorage" class="list-group-item list-group-item-action bg-light active">Driving vs. Storage</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('vbasics1').classList.add('active')
+</script>
+{% endblock %}
+

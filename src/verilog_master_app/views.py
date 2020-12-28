@@ -16,19 +16,31 @@ def form_submit(request):
 		saveInfo.save()
 		return HttpResponse('')
 	else:
-		render(request,'home.html')
+		return render(request,'articles/home.html')
 
 def intro1(request):
-    return render(request,'intro1.html')
+    return render(request,'articles/intro1.html')
 
 def intro2(request):
-    return render(request,'intro2.html')
+    return render(request,'articles/intro2.html')
 
 def verilogbasics1(request):
-	return render(request, 'verilog-basics-1.html')
+	return render(request, 'articles/verilog-basics-1.html')
 
 def digital_basics(request):
-    return render(request,'digital-basics.html')
+    return render(request,'articles/digital-basics.html')
+
+def verilog_basics_1(request):
+	return render(request,'articles/verilog-basics-1.html')
+
+def verilog_basics_2(request):
+	return render(request,'articles/verilog-basics-2.html')
+
+def modules_and_port_mappings(request):
+	return render(request, 'articles/modules-and-port-mappings.html')
+
+def behavioral_2(request):
+	return render(request,'articles/behavioral-2.html')
 
 def modules_and_port_mappings(request):
 	return render(request, 'modules-and-port-mappings.html')

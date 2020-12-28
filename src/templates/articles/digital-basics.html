@@ -1,0 +1,933 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Introduction to Verilog
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Digital Basics</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Digital Basics</h1>
+      <hr>
+      <p>Before jumping right into syntax and programming concepts in Verilog, it is really important to have a strong foundation in digital basics viz. Binary codes, Logic Gates and Boolean algebra. They are important as they help you in transforming your ideas into a presentable design structure.</p>
+      <p class="font-weight-bold">&emsp;There are four most commonly used number systems:</p>
+      <ol>
+        <li>Decimal (base-10)</li>
+        <li>Binary (base-2)</li>
+        <li>Octal (base-8)</li>
+        <li>Hexadecimal (base-16)</li>
+      </ol>
+      <p>Now we know, a computer is an electronic device and uses voltages to represent different numbers. Since voltages change very often, no specific voltage is set for each number in the decimal, octal or hex system. For this reason, binary is used as a two state system to represent values i.e. on and off. Also the binary system simplifies the design of computers and related technologies to a great extent. You will get to know some of its very powerful concepts in the upcoming articles!</p>
+      <br><hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">Binary Number System:</h3>
+      <p>In digital computers a combination of diodes and transistors is used to represent multiple ON and OFF states and represent an n-bit binary number. These devices exist in one of the two possible states. So, these two states can be represented by the symbols 1 and 0, respectively. </p>
+      <p>The binary number system is a positional weighted system. The base or radix of this system is 2. Hence, it has two independent symbols. The symbols used are 0 and 1. A binary digit is called a bit and a binary number consists of a sequence of bits, each of which is a 0 or a 1.</p>
+      <p>The binary point (.) separates the integer and fraction parts. Each bit carries a weight based on its position to binary point. The weight of each bit is 2 raised to power of the bit position.</p>
+      <pre>
+      Example:
+      Binary Number -  1  0  1  1  1 . 1  0  0
+      Position (n)  -  4  3  2  1  0 .-1 -2 -3
+      Weight (2<sup>n</sup>)   -  2<sup>4</sup> 2<sup>3</sup> 2<sup>2</sup> 2<sup>1</sup>  2<sup>0</sup>  2<sup>-1</sup> 2<sup>-2</sup> 2<sup>-3</sup>
+      </pre>
+      <p>Decimal value of binary number is the sum of products of all its bits multiplied by weights of their respective positions.</p>
+      <pre>
+      Decimal Equivalent  = 1x2<sup>4</sup>+ 0x2<sup>3</sup>+ 1x2<sup>2</sup>+ 1x2<sup>1</sup>+ 1x2<sup>0</sup> + 1x2<sup>-1</sup> + 0x2<sup>-2</sup> + 0x2<sup>-3</sup>
+      of (10111.100)      = 16 + 0 + 4 + 2 + 1 + 0.5 + 0 + 0
+                          = 23.5
+      </pre>
+      <p>Now that we have learned the basic representation of data in computers, let us see how we compute some important binary arithmetic to implement a digital system irrespective of its size and complexity. It is time for the <strong>LOGIC GATES!</strong></p>
+      <br><hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">Logic Gates:</h3>
+      <p>Logic Gates are fundamental building blocks of digital systems. The name logic gate is derived from the ability of such a device to make decisions, in the sense that it produces a specific output when some combination of inputs are present, and different outputs when other combinations of inputs are present. </p>
+      <p>Computers can perform very complex logic operations, thanks to the interconnection of these elementary logic gates. The interconnection of gates to perform a variety of logical operations is called <strong class="font-italic">logic design</strong>. We will learn some amazing logic design techniques using Verilog in future articles.</p>
+      <p>There are three basic types of gates viz. AND, OR and NOT. The functions of these gates are described with the help of a diagram and a table which lists all the possible combinations of input variables and corresponding outputs, known as the <strong class="font-italic">truth table</strong>.</p><br><hr>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">THE AND GATE:</h3>
+      <p>An AND gate has two or more inputs but only one output. The output assumes logic state 1 when <strong>each of its input</strong> is at logic state 1 and assumes logic state 0 <strong>even if one</strong> of its inputs is at logic 0.</p>
+      <p>The logic symbols and truth tables of two-input and three input AND gates are shown in figures below.</p>
+      <div class="d-flex flex-column">
+        <div class="row my-3">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/gate-and.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 2-input AND gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="2">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row my-5">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/3-gate-and.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 3-input AND gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="3">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>C</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p>When input variables to the AND gate are represented by A, B, C, …, the expression for output can be written as X = A.B.C… which is read as      ‘X equals to A and B and C and …’ or ‘X equal A dot B dot C dot …’.
+          We will cover the <u class="font-italic">and (.) operator(PC-1)</u> in the next section of <strong class="font-italic">‘Boolean algebra’</strong></p>
+      </div>
+      <hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">THE OR GATE:</h3>
+      <p>Similar to an AND gate, an OR gate may have two or more inputs but only one output. The output assumes logic state 1 <strong>even if one of</strong> its inputs is at logic state 1 and assumes logic state 0 <strong>only if each one of</strong> its inputs is at logic state 0.</p>
+      <p>The logic symbols and truth tables of two-input and three input OR gates are shown in figures below.</p>
+      <div class="d-flex flex-column">
+        <div class="row my-3">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/gate-or.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 2-input OR gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="2">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row my-5">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/3-gate-or.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 3-input OR gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="3">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>C</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p>When input variables to the OR gate are represented by A, B, C, …, the expression for output can be written as X = A+B+C+.. which is read as ‘X equals to A or B or C or …’ or ‘X equals A plus B plus C plus …’. We will cover the <u class="font-italic">or (+) operator (PC-2)</u> in the next section of <strong>‘Boolean algebra’</strong>.</p>
+      </div>
+      <hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">THE NOT GATE:</h3>
+      <p>A NOT gate, also called an inverter, has only one input and, of course only one output. The output of this device is always the <u class="font-italic">complement of its input (PC-3)</u>. That is in simple words, NOT gate assumes logic state 1 when input state is 0 and logic state 0 when input state is 1.</p>
+      <p>The logic symbol and truth table of a NOT gate are shown in figures below.</p>
+      <div class="row my-4">
+        <div class="col-md-6">
+          <img class="img-fluid" src="{% static "img/gates/gate-inverter.jpg"%}" alt="">
+          <h5 class="text-center">Fig. NOT gate</h5>
+        </div>
+        <div class="col-md-6">
+          <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th>Input</th>
+                <th>Outputs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>A</th>
+                <th>X</th>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p>The symbol for a ‘NOT’ operation is ‘’ (bar). When input variable to the ‘NOT’ gate is represented by A and output by X, the output expression is given as, X =A. This is read as “X equals to A bar”.</p>
+      <hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">UNIVERSAL GATES:</h3>
+      <p>Though logic circuits of any complexity can be realized by using only three basic gates (AND, OR and NOT), there are two universal gates (NAND and NOR), each of which can be used single-handedly to realize any logic. NAND and NOR can perform all three logic functions (AND,OR and NOT). Therefore, they are also called <u class="font-italic">universal logic gates</u>.</p>
+      <br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">THE NAND GATE:</h3>
+      <p>NAND means NOT AND, i.e. AND output is NOTed (or complemented). So, a NAND gate is a serial combination of AND and NOT gates.</p>
+      <p>The logic symbols and truth tables of two-input and three input NAND gates are shown in figures below.</p>
+      <div class="d-flex flex-column">
+        <div class="row my-3">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/gate-nand.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 2-input NAND gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="2">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row my-5">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/3-gate-nand.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 3-input NAND gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="3">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>C</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    <p>When input variables to the NAND gate are represented by A, B, C, …, the expression for output can be written as X =A.B.C… which is read as ‘X equals to A and B and C and … whole bar’ or ‘X equal A dot B dot C dot … whole bar’.  </p>
+    <hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">THE NOR GATE:</h3>
+      <p>NOR means NOT OR, i.e. OR output is NOTed (or complemented). So, a NOR gate is a serial combination of OR and NOT gates.</p>
+      <p>The logic symbols and truth tables of two-input and three input NOR gates are shown in figures below.</p>
+      <div class="d-flex flex-column">
+        <div class="row my-3">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/gate-nor.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 2-input NOR gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="2">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row my-5">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/3-gate-nor.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 3-input NOR gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="3">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>C</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p>When input variables to the NOR gate are represented by A, B, C, …, the expression for output can be written as X = A+B+C+.. which is read as      ‘X equals to A or B or C or … whole bar’ or ‘X equals A plus B plus C plus … whole bar’.</p>
+      <hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">THE XOR GATE:</h3>
+      <p>A X-OR gate is a two input, one output logic circuit, whose output assumes a logic state 1 when <strong>one and only one</strong> of its input assumes a logic state 1. Under the conditions, when both of its inputs are logic state 0 or logic state 1, the output assumes a logic state 0.</p>
+      <p>Since an X-OR gate produces an output 1 only when the inputs are not equal, it is called an <u class="font-italic">anti-coincidence</u> or <u class="font-italic">inequality detector</u>. The output of X-OR gate is the modulo sum of its two inputs.</p>
+      <p>The logic symbol and truth table of a two-input X-OR gate are shown in figures below.</p>
+      <div class="row my-5">
+        <div class="col-md-6">
+          <img class="img-fluid" src="{% static "img/gates/gate-xor.jpg"%}" alt="">
+          <h5 class="text-center">Fig. XOR gate</h5>
+        </div>
+        <div class="col-md-6">
+          <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th colspan="2">Inputs</th>
+                <th>Outputs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>X</th>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        <p>The input variables are represented by A and B and the output variable by X, the expression for output is X = A⊕B = AB + AB and read as “X is equal to A ex-or B”.</p>
+        <p>Three or more variable X-OR gates do not exist. When two or more variables are to be X-ORed multiple XOR gates are cascaded. The X-OR of a number of variables assume a 1 only when an <u class="font-italic">odd number of input variables</u> assume a 1 state.</p>
+        <hr><br>
+        <h3 class="font-weight-bold" style="font-size:1.25rem;">THE XNOR GATE:</h3>
+        <p>An X-NOR gate is a combination of an X-OR and a NOT gate.   It is a two input, one output logic circuit, whose output assumes a logic state 1 only when <strong>both inputs</strong> assume a 0 state or a 1 state. The output assumes a 0 state when one of inputs is 0 and other is 1.</p>
+        <p>Since an X-NOR gate produces an output 1 only when the inputs are equal, it is called a <u class="font-italic">coincidence gate or equality detector</u>.</p>
+        <p>The logic symbol and truth table of a two-input X-NOR gate is shown in figures below.</p>
+        <div class="row my-5">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/gate-xnor.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 3-input XNOR gate</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="3">Inputs</th>
+                  <th>Outputs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>C</th>
+                  <th>X</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p>The input variables are represented by A and B and the output variable by X, the expression for output is X = AΘB = AB + AB and read as “X is equal to A ex-nor B”.</p>
+        <p>Three or more variable X-NOR gates do not exist. When two or more variables are to be X-NORed multiple X-NOR gates are cascaded. The X-NOR of a number of variables assume a 1 only when an <u class="font-italic">even number of input variables (including 0)</u> assume a 1 state.</p>
+        <hr><br>
+        <p>Here comes the end to an amazing journey of logic gates which forms the basis of digital system design. They play a vital role in realizing the logic expressions defined for the functioning of a system.</p>
+        <p> In the next section, we will learn <u>‘Boolean algebra’</u> which will help us in solving complex logic expressions and networks of logic gates into their simpler forms. This will help us realize a digital system in least possible resources. <strong>Let’s get started!</strong></p>
+        <br><hr><br>
+
+        <h3 class="font-weight-bold" style="font-size:1.25rem;">BOOLEAN ALGEBRA:</h3>
+        <p>Boolean algebra is a division of mathematics that deals with operations on logical values and incorporates binary variables. It is governed by certain well-developed rules and laws that we will see in upcoming sections. </p>
+        <p>Contrary to elementary algebra where values of variables are decimal numbers and prime operations as addition and multiplication, Boolean algebra deals with binary numbers and uses operations like <span class="font-italic">and, or & not</span>. Thus, it is a way of representing logical operations in the same way as elementary algebra for numerical operations.</p><br>
+        <h3 class="font-weight-bold" style="font-size:1.25rem;">BASIC OPERATIONS:</h3>
+        <ul class="my-4">
+          <li><h4 class="font-weight-bold" style="font-size:1.15rem;">AND Operation:</h4>
+          <p>In Boolean algebra, the AND operation is represented with a dot(.) operator and can be carried out between two or more operands.The operation results in true (1) <strong>only when all</strong> the operands are true and in the rest of the cases the result is false (0).</p></li>
+        </ul>
+        <ul>
+          <li><h4 class="font-weight-bold" style="font-size:1.15rem;">OR Operation:</h4>
+          <p>The OR operation is represented with a plus(+) operator and can be carried between two or more operands.
+            The operation results in true (1) <strong>even if one of</strong> the operands is true and is false (0) <strong>only when all</strong> operands are false (0).</p></li>
+        </ul>
+        <ul>
+          <li><h4 class="font-weight-bold" style="font-size:1.15rem;">NOT Operation :</h4>
+          <p>The NOT operation is represented with a bar (‘¯’) over a variable and is a unary operator.The operation returns true (1) <strong>when operand is false</strong> and returns false (0) <strong>when operand is true</strong>.</p></li>
+        </ul>
+        <hr><br>
+        <h3 class="font-weight-bold" style="font-size:1.25rem;">AXIOMS AND LAWS OF BOOLEAN ALGEBRA:</h3>
+        <p>Axioms or laws are statements that we accept without any proofs and upon which we can build a set of useful theorems. Each axiom can be interpreted as the outcome of an operation by a logic gate.</p>
+        <table class="table w-75 mx-auto table-striped text-center">
+          <tbody>
+            <tr>
+              <td>Axiom 1 : 0.0 = 0</td>
+              <td>Axiom 6 : 0+1 = 1</td>
+            </tr>
+            <tr>
+              <td>Axiom 2 : 0.1 = 0</td>
+              <td>Axiom 7 : 1+0 = 1</td>
+            </tr>
+            <tr>
+              <td>Axiom 3 : 1.0 = 0</td>
+              <td>Axiom 8 : 1+1 = 1</td>
+            </tr>
+            <tr>
+              <td>Axiom 4 : 1.1 = 1</td>
+              <td>Axiom 9 : 1 = 0</td>
+            </tr>
+            <tr>
+              <td>Axiom 5 : 0+0 = 0</td>
+              <td>Axiom 10 : 0 = 1</td>
+            </tr>
+          </tbody>
+        </table>
+      <br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">COMPLEMENTATION LAWS:</h3>
+      <p>The term complement simply means to invert i.e. to change 0s to 1s and 1s to 0s. There are five complementation laws as listed below:</p>
+      <table class="table table-striped text-center w-50 mx-auto">
+        <tbody>
+          <tr>
+            <td>Law 1</td>
+            <td>0 = 1</td>
+          </tr>
+          <tr>
+            <td>Law 2</td>
+            <td>1 = 0</td>
+          </tr>
+          <tr>
+            <td>Law 3</td>
+            <td>If A = 0 then A = 1</td>
+          </tr>
+          <tr>
+            <td>Law 4</td>
+            <td>If A = 1, then A = 0</td>
+          </tr>
+          <tr>
+            <td>Law 5</td>
+            <td>A̿ = A</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">AND LAWS:</h3>
+      <p>There are four AND laws as listed below::</p>
+      <table class="table table-striped text-center w-50 mx-auto">
+        <tbody>
+          <tr>
+            <td>Law 1</td>
+            <td>A.0 = 0</td>
+          </tr>
+          <tr>
+            <td>Law 2</td>
+            <td>A.1 = A</td>
+          </tr>
+          <tr>
+            <td>Law 3</td>
+            <td>A.A = A</td>
+          </tr>
+          <tr>
+            <td>Law 4</td>
+            <td>A.A = 0</td>
+          </tr>
+        </tbody>
+      </table><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">OR LAWS:</h3>
+      <p>There are four OR laws as listed below::</p>
+      <table class="table table-striped text-center w-50 mx-auto">
+        <tbody>
+          <tr>
+            <td>Law 1</td>
+            <td>A+0 = A</td>
+          </tr>
+          <tr>
+            <td>Law 2</td>
+            <td>A+1 = 1</td>
+          </tr>
+          <tr>
+            <td>Law 3</td>
+            <td>A+A = A</td>
+          </tr>
+          <tr>
+            <td>Law 4</td>
+            <td>A+A = 1</td>
+          </tr>
+        </tbody>
+      </table><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">COMMUTATIVE LAWS:</h3>
+      <p>Commutative laws allow change in position of AND or OR variables. There are two commutative laws.</p>
+      <table class="table table-striped text-center w-50 mx-auto">
+        <tbody>
+          <tr>
+            <td>Law 1</td>
+            <td>A + B = B + A</td>
+          </tr>
+          <tr>
+            <td>Law 2</td>
+            <td>A.B = B.A</td>
+          </tr>
+        </tbody>
+      </table><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">ASSOCIATIVE LAWS:</h3>
+      <p>The associative laws allow grouping of variables. Laws are listed below:</p>
+      <table class="table table-striped text-center w-50 mx-auto">
+        <tbody>
+          <tr>
+            <td>Law 1</td>
+            <td>(A+B) + C = A + (B+C)</td>
+          </tr>
+          <tr>
+            <td>Law 2</td>
+            <td>(A.B)C = A(B.C)</td>
+          </tr>
+        </tbody>
+      </table><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">DISTRIBUTIVE LAWS:</h3>
+      <p>There are three distributive laws:</p>
+      <table class="table table-striped text-center w-50 mx-auto">
+        <tbody>
+          <tr>
+            <td>Law 1</td>
+            <td>A(B+C) = AB + AC</td>
+          </tr>
+          <tr>
+            <td>Law 2</td>
+            <td>A + BC = (A+B)(A+C)</td>
+          </tr>
+          <tr>
+            <td>Law 3</td>
+            <td>A + AB = (A+ A)(A+B)<br>= 1 . (A+B)<br>  = A + B</td>
+          </tr>
+        </tbody>
+      </table><br>
+      <hr><br>
+
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">CONSENSUS THEOREM:</h3>
+      <p>The consensus theorem is a rule or an identity. It is stated as the conjunction of all the unique literals of the terms, excluding the literal that appears unnegated in one term and negated in the other.</p>
+      <table class="table table-striped text-center w-50 mx-auto mb-5">
+        <tbody>
+          <tr>
+            <th>Theorem 1:</th>
+            <td>AB+ AC+BC=AB+AC</td>
+          </tr>
+          <tr>
+            <th>Theorem 2:</th>
+            <td>A+BA+CB+C=(A+B)(A+C)</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr><br>
+      <h3 class="font-weight-bold" style="font-size:1.25rem;">DE MORGAN'S THEOREM:</h3>
+      <p>De Morgan’s theorem represents two of the most powerful laws in Boolean algebra. They are stated as: </p>
+      <p><strong>Law 1: </strong>A+B= A.B</p>
+      <p>This law states that the complement of a sum of variables is equal to the product of their individual complements. It can be extended to any number of variables or combinations.</p>
+      <p>Example: A+B+C+D+…= A.B.C.D...</p>
+      <p><strong>Law 2: </strong>AB= A+ B</p>
+      <p>This law states that complement of the product of variables is equal to the sum of their individual complements. It can be extended to any number of variables or combinations.</p>
+      <p>Example: ABCD…=  A+ B+ C+ D+ ..</p>
+    </div>
+    <hr><br>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  document.getElementById('dbasics').classList.add('active')
+</script>
+{% endblock %}

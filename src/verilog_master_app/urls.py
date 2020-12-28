@@ -8,5 +8,7 @@ urlpatterns = [
     path('intro2/',views.intro2,name="intro2"),
     path('verilog-basics-1/',views.verilogbasics1, name="verilogbasics1"),
     path('digital-basics/',views.digital_basics,name="digital_basics"),
-    path('modules-and-port-mappings/',views.modules_and_port_mappings, name="modules_and_port_mappings")
+    path('modules-and-port-mappings/',views.modules_and_port_mappings, name="modules_and_port_mappings"),
+    path('behavioral-2/',views.behavioral_2,name="behavioral2"),
+
 ]

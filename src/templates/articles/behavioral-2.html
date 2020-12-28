@@ -1,0 +1,332 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Behavioral Modelling - 2
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Behavioral Modelling-II</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Behavioral Modelling - II</h1>
+      <hr>
+      <h3 id="loops" class="font-weight-bold" style="font-size:1.25rem;">Loops:</h3>
+
+      <p>You must be aware of loops in programming languages; they help us in executing one or more statements repeatedly finite or infinite number of times. Almost all the programming languages provide the concept of loops, which iterate some code that would otherwise take too many lines. In the same sense, Verilog also comes with this functionality to reduce some human effort.</p>
+      <p>There are four types of looping statements in Verilog, namely <span class="font-italic font-weight-bold">while, for, forever and repeat</span>. The syntax for these loops is very similar to loops in C language.</p>
+
+      <p>Loops are very handy but their use is not recommended for synthesizable designs. Out of the four loops listed above, only <strong>for-loop</strong> is the one typically suitable for synthesis. The reason is that, when a synthesis tool tries to turn your code into gates and registers it needs to know exactly how many times the loop will run. <strong class="font-weight-bold">while, forever and repeat loops run relentlessly</strong>, so their exact loop count is unknown, whereas all the statements within the for-loop are replicated, once for each value of the for-loop index.
+      </p>
+
+      <hr>
+      <h3 id="while" class="font-weight-bold" style="font-size:1.25rem;">The While Loop:</h3>
+
+      <p>The while-loop executes a block of code until a certain condition becomes false. The keyword ‘while’ is used to specify this loop. If the loop is entered with condition being false, the loop is not executed. For more than one statement, begin and end keywords are used to enclose them in a block. The following example shows the use of while loop.</p>
+
+<pre class="line-numbers"><code class="language-verilog">  module while_loop (input a, output b) ;
+  reg [2:0] a ;
+  reg [7:0] b;
+  initial
+  begin
+    a = 2'b111;
+    b = 8’b0;
+    while (a)
+    begin
+      a = a-1;
+                b = b + a;
+      $display("a = %b, b = %b ",a, b);
+    end
+  end
+  endmodule</code></pre>
+
+      <p>In the example above, a 3-bit variable ‘a’ and 8-bit variable ‘b’ are declared as input and output respectively. The initial block executes at simulation time ‘t=0’ and initializes a = 8, b = 0. The while loop executes statements under begin and end keywords, while continuously monitoring the variable ‘a’. The loop executes for a = 8,7,6,5,4,3,2,1 and then exits for a = 0. The output can be realized as,</p>
+      <pre><code class="language-verilog">        a = 110, b = 00000110
+        a = 101, b = 00001011
+        a = 100, b = 00001111    
+        a = 011, b = 00010010
+        a = 010, b = 00010100
+        a = 001, b = 00010101
+        a = 000, b = 00010101</code></pre>
+      <hr>
+      <h3 id="for" class="font-weight-bold" style="font-size:1.25rem;">The For Loop:</h3>
+      <p>A <strong>for-loop</strong> provides a repetition control flow that allows you to efficiently write a loop that needs to execute a specific number of times. In Verilog, a for-loop is always preferred for synthesizable designs.</p>
+
+      <p>A for loop has three parts separated by a semicolon. First is an initialization statement, which initializes the variable that will control the loop. The second part is the condition in which the loop will be entered. Third part modifies the control variable after every loop entry. The given example will make it clearer.</p>
+
+<pre class="line-numbers"><code class="language-verilog"> module for_loop (input a, output b) ;
+    reg [2:0] a ;
+    reg [7:0] b ;
+
+    initial
+    begin
+      b = 8’b0;
+      for (a=0; a <=; a=a+1)
+      begin
+        b = b + a;
+        $display("a = %b, b = %b ", a, b);
+      end
+    end
+  endmodule</code></pre>
+
+      <p>Here, the variable ‘a’ is initialized to zero and a condition ‘a<=8’ is specified which is checked after each iteration. After each loop entry the variable is incremented as written in the third part. Hence, the loop iterates the code enclosed in begin and end keywords for 8 times. The output for above program is given as,</p>
+
+      <pre><code class="language-verilog">        a = 000, b = 00000000
+        a = 001, b = 00000001
+        a = 010, b = 00000011    
+        a = 011, b = 00000110
+        a = 100, b = 00001010
+        a = 101, b = 00001111
+        a = 110, b = 00010101
+        a = 111, b = 00011100</code></pre>
+      <hr>
+
+      <h3 id="forever" class="font-weight-bold" style="font-size:1.25rem;">The Forever Loop:</h3>
+
+      <p>As the name suggests a forever loop runs forever, that is, it executes a statement indefinitely. If multiple statements are to be written, they must be grouped within <strong>begin and end</strong> keywords. The loop can be ended with <strong>‘$finish’ (P.C)</strong> task. The best example would be a simple clock generator.</p>
+
+<pre class="line-numbers"><code class="language-verilog"> module clock_model ( clk ) ;
+  output clk ;
+  reg clk ;
+
+  initial 
+  begin
+    clk = 1'b0 ;
+    forever
+        #1 clk = ~clk;
+  end
+  endmodule</code></pre>
+      <hr>
+
+      <h3 id="repeat" class="font-weight-bold" style="font-size:1.25rem;">The Repeat Loop:</h3>
+     
+      <p>A repeat loop executes the same statement a specified number of times. A general logic expression cannot be used to loop on repeat. The construct must be a number, which can be a constant or a variable or a signal value. However, if the number is a variable or a signal value, it is evaluated only when the loop starts and not during the execution.</p>
+      <p>An example for repeat loop is given, </p>
+<pre class="line-numbers"><code class="language-verilog">  module repeat_loop (input a, input b) ;
+    reg [3:0] a ;
+    reg [7:0] b;
+
+    initial
+    begin
+      repeat (a)
+      begin
+        b = b + a;
+        $display(" %b",b);
+      end            
+    end
+  endmodule </code></pre>
+      <hr>
+
+      <h3 id="procedural" class="font-weight-bold font-underline" style="font-size:1.25rem;"><u>Procedural Blocks:</u></h3>
+      <p>There are mainly two ways to group multiple statements known as procedural blocks or block statements. They are namely sequential (begin-end) and parallel (fork-join) methods.</p>
+
+      <h3 id="sequential" class="font-weight-bold" style="font-size:1.25rem;">Sequential Block:</h3>
+      <p>In this, the statements are enclosed with begin and end keywords to form a group and are executed sequentially in the given order. A statement is executed only after its preceding statement completes execution (except for non-blocking assignments). If a timing control statement appears within a block, then the next statement will be executed after that delay.The delay values here are treated relative to the time of execution of the previous statement.</p>
+      <strong>Example 1:</strong>
+<pre class="line-numbers"><code class="language-verilog">  begin
+  a = 1;
+  #10 a = 0;
+  #5 a = 4;
+  end</code></pre>
+      <p>During the simulation, this block will be executed in 15 time units. At time 0, the 'a' variable will be 1, at time 10 the 'a' variable will be 0, and at time 15 (#10 + #5) the 'a' variable will be 4.</p>
+
+      <h3 id="parallel" class="font-weight-bold" style="font-size:1.25rem;">Parallel Block:</h3>
+      <p>In this, the statements are enclosed with <strong>fork and join</strong> keywords and are executed concurrently. All statements within this block are executed at the same time. This means that the execution of the next statement will not be delayed even if the previous statement contains a timing control statement. The delay or timing control is relative to the time the block was entered. Hence the order in which the statements are written is <strong>not important</strong>.</p>
+
+      <strong>Example 1:</strong>
+<pre class="line-numbers"><code class="language-verilog">  fork
+  a = 1;
+  #10 a = 0;
+  #5 a = 4;
+  join</code></pre>
+      <p>During the simulation this block will be executed in 10 time units. At time 0 the 'a' variable will be 1, at time 5 the 'a' variable will be 4, and at time 10 the 'a' variable will be 0.</p>
+
+      <strong>Example 2:</strong>
+<pre class="line-numbers"><code class="language-verilog">  fork
+  a = 1;
+  @(b);
+  a = 0;
+  join</code></pre>
+
+      <p>During the simulation when this block is executed 'a' becomes 1 and when a change occurs on 'b', then 'a' changes to 0. Flow of the procedural block is suspended when the @(b) statement is reached awaiting a change in value of 'b' before procedure block activities resume.</p>
+      <p><span class="font-italic font-weight-bold">Note:</span> In parallel blocks all statements are executed at the same time, so there must not be any mutual dependent assignments.
+      </p>
+      <hr>
+      <h3 id="nested" class="font-weight-bold" style="font-size:1.25rem;">Nested blocks:</h3>
+      <p>The sequential and parallel blocks can be nested within each other similar to loops and conditional statements. Some examples of nested block statements are given below.
+      </p>
+      <strong>Example 1: begin-end under fork-join</strong>
+<pre class="line-numbers"><code class="language-verilog">  initial 
+  begin
+          $display ("fork-join started.");
+          fork
+            // Statement1
+            #20 $display ("Statement 1 finished.");
+  
+            // Statement 2
+            begin
+                #15 $display ("Statement 2 started.”);
+                #10 $display ("Statement 2 finished.”$");
+            end
+  
+            // Statement 3
+            #10 $display (“Statement 3 finished.");
+          join
+          $display ("fork-join finished.");
+  end</code></pre>
+
+      <p>The execution starts with begin-end in the initial block. The fork-join block starts executing statements 1, 2 and 3 simultaneously at time t = 0ns. Statement 3 takes the least time of 10ns to complete. At t = 15ns Statement 2 starts but takes time to finish. In the meantime Statement 1 completes at t = 20ns and then Statement 2 finishes at t = 25ns. Finally for-join completes and control comes out of the initial block. An output log is shown below for better understanding.</p>
+
+      <pre><code>        fork-join started.
+        Statement 3 finished.
+        Statement 2 started.
+        Statement 1 finished.
+        Statement 2  finished.
+        fork-join finished.
+      </code></pre>
+
+      <strong>Example 2: nested fork-join</strong>
+<pre class="line-numbers"><code class="language-verilog">  initial 
+  begin
+        $display ("fork-join started.");
+        fork
+          // Statement1
+          #20 $display ("Statement 1");
+
+          // Statement 2
+          fork
+            #15 $display ("Statement 2 part 1 finished.”);
+            begin
+              #10 $display ("Statement 2 part 2 started”$");
+              #15 $display ("Statement 2 part 2 finished”$");
+            end
+          join
+          // Statement 3
+          #10 $display (“Statement 3 finished.");
+        join
+        $display ("fork-join finished.");
+  end</code></pre>
+      <p>The execution starts with begin-end in the initial block. The fork-join block starts executing statements 1, 2 and 3 simultaneously at time t = 0ns. The nested Statement 3 10ns to complete. Statement 2 part 2 starts at t = 10ns but is not finished yet. Statement 2 part 1 finishes at t=15ns and Statement 1 finishes at t=20ns. Later at 25ns Statement 2 part 2 finishes. Finally for-join completes and control comes out of the initial block. An output log is shown below for better understanding.</p>
+<pre><code>        fork-join started.
+        Statement 3 finished.
+        Statement 2 part 2 started.
+        Statement 2 part 1 finished.
+        Statement 1 finished.
+        Statement 2 part 2 finished.
+        fork-join finished.</code></pre>
+
+      <p>I’m sure that these two examples would give a clear understanding of control flow in procedural blocks. Also you can master yourself by nesting together multiple sequential and parallel blocks and observing simulation outputs. Now let’s jump onto the last topic in behavioral modeling ‘Tasks and Functions’.</p>
+      <hr>
+
+      <h3 id="tasks_funcs" class="font-weight-bold" style="font-size:1.25rem;">Tasks and Functions:</h3>
+      <p>Many times a designer requires the same functionality to be implemented at various places in a behavioral design. In order to achieve this, Verilog provides ‘tasks’ and ‘functions’ that gives an ability to execute common procedures from several different places in a program. They also provide a means of breaking up large procedures into smaller ones to make it easier to read and debug. Input, output, and inout values can be passed into both tasks and functions.</p>
+      <ul>
+        Some key differences between ‘tasks’ and ‘functions’ are listed below.
+        <li>A function must execute in one simulation time unit; a task can contain time-controlling statements.</li>
+        <li>A function cannot enable a task; a task can enable other tasks and functions.</li>
+        <li>A function must have at least one input argument; a task can have zero or more arguments of any type.</li>
+        <li>A function returns a single value; a task does not return a value.</li>
+      </ul>
+
+      <p>The purpose of a function is to respond to an input value by returning a single value. A task can support multiple goals and can calculate multiple result values but won’t return anything. Verilog model uses a function as an operand in an expression; the value of that operand is the value returned by the function.</p>
+
+      <p>For example, we can define a function or a task to switch values of two 4-bit variables. The function would return the switched value directly but the task would return the switched word in an output argument.</p>
+      <strong>&emsp;Function: new_value = switch_value (old_value) <br>&emsp;Task: switch_value (old_value, new_value)</strong>
+      <p><br>The next sections describe how to define and invoke tasks and functions and present examples of each.</p>
+      <hr>
+
+      <h3 id="tasks" class="font-weight-bold" style="font-size:1.25rem;">Tasks:</h3>
+      <p>A task is enabled from a statement that defines the argument values to be passed to the task and the variables that will receive the results. Control is passed back to the enabling process after the task has been completed. Thus, if a task has timing controls inside it, then the time of enabling can be different from the time at which control is returned. Regardless of how many tasks have been enabled, control does not return until all enabled tasks have been completed. ‘task’ is used to define a task.
+      </p>
+      <p>The following is the syntax for defining a task:</p>
+<pre class="line-numbers"><code class="language-verilog">  task [name_of_task];
+    [tasks_or_function declaration]
+    [code_or_statements]
+  end</code></pre>
+      <p>An example defining a switch_value task is given below which switches the value of an inout variable.</p>
+<pre class="line-numbers"><code class="language-verilog">  module test_module();
+    task switch_value;
+      input a;
+      inout reg b;
+      begin
+                b = a;
+      end
+    endtask
+  endmodule</code></pre>
+      <p>The following statement enables the task in above example:</p>
+      <strong>&emsp;switch_value (x,y);</strong>
+      <p><br>The calling arguments (x, y) correspond to the I/O arguments (a, b) defined by the task. At task enabling time, the input and inout arguments (a, b) receive the values passed in x and y respectively. Thus, execution of the task enabling call effectively causes the following assignments: a=x; b=y. As part of the processing of the task, the task definition for <strong>switch_value</strong> must place the computed results values into b. When the task completes, the processing software performs the following assignments to return the computed values to the <strong>calling process: y=b;</strong></p>
+      <hr>
+
+      <h3 id="funcs" class="font-weight-bold" style="font-size:1.25rem;">Functions:</h3>
+      <p>The purpose of a function is to return a value that is to be used in an expression. The rest of this chapter explains how to define and use functions.</p>
+      <p>The following is the syntax for functions in Verilog,</p>
+      <pre class="line-numbers">
+<code class="language-verilog">  function  [range_or_type] name ([port_list]);
+  [statements]
+  endfunction</code></pre>
+      <p>A function returns a value by assigning the value to the function’s name. The [range_or_type] item which specifies the data type of the function’s return is optional.</p>
+      <p>The function definition implicitly declares a register, internal to the function, with the same name as the function. This register either defaults to one bit or is the type that [range_or_type] specifies. The [range_or_type] can specify that the function’s return value is a real, an integer, or a value with a range of [n:m] bits. The function assigns its return value to the internal variable bearing the function’s name. The following example illustrates this concept:</p>
+<pre class="line-numbers"><code class="language-verilog">  module sample;
+  function [7:0] getdata;
+  input [15:0] address;
+  reg [3:0] result;
+  begin
+  // code to extract data from address
+  getdata = result;
+  end
+  endfunction
+  endmodule</code></pre>
+      <p>In the line <strong>getdata = result;</strong> we assign function return value result to its internal variable getdata.</p>
+      <ul>
+        Functions are more limited than tasks. The following five rules govern their usage:
+        <li>A function definition cannot contain any time controlled statements—that is, any statements introduced with#,@,or wait.</li>
+        <li>Functions cannot enable tasks.</li>
+        <li> A function definition must contain at least one input argument.</li>
+        <li> A function definition must include an assignment of the function result value to the internal variable that has the same name as the function.</li>
+        <li>  A function definition cannot contain an inout declaration or an output declaration.</li>
+      </ul>
+
+      <p>Here we end our discussion on behavioral modeling and subsequently complete all the basics you need to know to write some awesome model descriptions in Verilog HDL. In further articles we will cover some basic combinational and sequential designs, their gate level netlist and simulations in Xilinx Vivado IDE.</p>
+
+      <strong class="font-italic">&emsp;Keep learning with Verilog Master!</strong>
+    </div>
+
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#loops" class="list-group-item list-group-item-action bg-light">Loops</a>
+        <a href="#while" class="list-group-item list-group-item-action bg-light">While</a>
+        <a href="#for" class="list-group-item list-group-item-action bg-light">For</a>
+        <a href="#forever" class="list-group-item list-group-item-action bg-light">Forever</a>
+        <a href="#repeat" class="list-group-item list-group-item-action bg-light">Repeat</a>
+        <a href="#sequential" class="list-group-item list-group-item-action bg-light active">Sequential</a>
+        <a href="#parallel" class="list-group-item list-group-item-action bg-light active">Parallel Block</a>
+        <a href="#nested" class="list-group-item list-group-item-action bg-light active">Nested Blocks</a>
+        <a href="#tasks_funcs" class="list-group-item list-group-item-action bg-light active">Tasks Functions</a>
+        <a href="#tasks" class="list-group-item list-group-item-action bg-light active">Tasks</a>
+        <a href="#funcs" class="list-group-item list-group-item-action bg-light active">Functions</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('behavioral2').classList.add('active')
+</script>
+{% endblock %}
