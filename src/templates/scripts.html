@@ -11,6 +11,8 @@
 <script src="{% static 'vendor/owl.carousel/owl.carousel.min.js' %}"></script>
 <script src="{% static 'vendor/aos/aos.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/prism.js' %}"></script>
+<script src="{% static 'js/prism1.js' %}"></script>
 <script type="text/javascript">
   $('body').scrollspy({ target: '#in-this-article' });
 
@@ -22,7 +24,7 @@
           const hash = this.hash;
 
           $('html, body').animate({
-            scrollTop: $(hash).offset().top-70
+            scrollTop: $(hash).offset().top-100
           }, 1000, 'easeInOutExpo');
         }
       });
