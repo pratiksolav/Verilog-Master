@@ -24,10 +24,6 @@ def intro1(request):
 def intro2(request):
     return render(request,'articles/intro2.html')
 
-<<<<<<< Updated upstream
-def digital_basics(request):
-    return render(request,'digital-basics.html')
-=======
 def verilogbasics1(request):
 	return render(request, 'articles/verilog-basics-1.html')
 
@@ -45,4 +41,6 @@ def modules_and_port_mappings(request):
 
 def behavioral_2(request):
 	return render(request,'articles/behavioral-2.html')
->>>>>>> Stashed changes
+
+def modules_and_port_mappings(request):
+	return render(request, 'modules-and-port-mappings.html')
