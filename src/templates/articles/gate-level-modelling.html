@@ -1,0 +1,756 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Gate Level Modelling
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Gate Level Modelling</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Gate Level Modelling</h1>
+      <hr>
+      <p id="Intro">Well, here you are finally! Done with all the basics and ready to write codes at a specific abstraction level. Welcome! You might have already had a few brief encounters with ‘Digital Gates’. After all, any introductory digital lecture starts with examples of logic gates, right? ☺ In particular, we introduced you to <a href="#">Digital Gates</a>, <a href="#">Verilog Primitives</a>, <a href="#">Gate Level Modelling</a>. You can always go back and revise those concepts.</p>
+
+      <p>Still, it is our duty to cause as less burden upon you as possible. So, we will start with an informal and analogical introduction to Gate Level Modelling in Verilog, to make its purpose totally clear!</p>
+
+      <hr>
+      <h3 id="why_gate_level" class="font-weight-bold" style="font-size:1.25rem;">The What and the Why?</h3>
+
+      <p>First of all, let us understand what coding in any abstraction level means. Simply said, an abstraction is a way of hiding the actual implementation, so that talented designers such as you, can write their design codes easily rather than being worried about its detailed circuit layout. The higher the abstraction level, the lower is the amount of detail revealed in the code, and vice versa.</p>
+
+      <p>If you programmed in any high level languages such as C, you already know that you simply work and manipulate variables. Never once was it needed to know how the computer interprets them right?</p>
+
+      <p>As you already might know, Verilog offers us four levels of abstraction for our design codes. Gate Level is among the lower ones. Now you might think that why not go for a higher abstraction, where the pain upon you would be less. Well, frankly this is true, as complex designs indeed use high level abstractions. But, for designing simple or beginner level hardware elements, gate level would be quite easy, even more if you have a circuit diagram in the form of gates.</p>
+
+      <p>In this type of modelling, you can directly plant the gates and interconnecting wires as you see in the circuit diagram. This is what we call a ‘one to one correspondence’ between the code and circuit. To make this stuff clear, imagine you are given the following circuit, and being asked for a Verilog description.</p>
+
+      <div class="col-md-10">
+        <img class="img-fluid" src="{% static "img/gates/logic_circuit.jpg"%}" alt="">
+        <h5 class="text-center">Fig. A Typical Combinational Circuit</h5>
+      </div>
+
+      <p>Now, you have two options: -<br>
+        <ol>
+          <li>Calculate on your own the output expressions, and assign them to an output net on your code.</li>
+          <li>Directly instantiate Verilog primitives for all the above gates, and provide interconnections as given in the circuit.</li>
+        </ol>
+      </p>
+      
+      <p>You may argue that the first method won’t take time. But what if the circuit is a 100 times more complex and has a wild routing of wires. Solving on your own would take time and will be highly prone to errors as well, whereas directly copying the model in the form of a Gate-Level code won’t.</p>
+
+      <p id="tables">We already covered <a href="#">Verilog Primitives</a>. So we won’t be explaining them again here. Still, we shall provide tables for all the gates below for easy access: -</p>
+
+      <div class="row">
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>and</th>
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row">0</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>0</td>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">x</th>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">z</th>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>or</th>
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row">0</th>
+                <td>0</td>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">x</th>
+                <td>x</td>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">z</th>
+                <td>x</td>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>xor</th>
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row">0</th>
+                <td>0</td>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>1</td>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">x</th>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">z</th>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+
+        
+
+      </div>
+<br>
+    <div class="row">
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>nand</th>
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row">0</th>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>1</td>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">x</th>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">z</th>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>nor</th>
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row">0</th>
+                <td>1</td>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th scope="row">x</th>
+                <td>x</td>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">z</th>
+                <td>x</td>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>xnor</th>
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row">0</th>
+                <td>1</td>
+                <td>0</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">1</th>
+                <td>0</td>
+                <td>1</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">x</th>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <th scope="row">z</th>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+    <div class="col-md-3">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>buf</th>
+                <th scope="col">in</th>
+                <th scope="col">out</th>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>z</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+        
+        <div class="col-md-3">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th>not</th>
+                <th scope="col">in</th>
+                <th scope="col">out</th>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td>z</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+      <div class="col-md-6">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th colspan="2" rowspan="2">bufif1</th>
+                <th colspan="4">CONTROL INPUT</th>
+              </tr>
+              <tr class="thread-dark">
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row" rowspan="4">S<br>I<br>G<br>N<br>A<br>L</th>
+                <th scope="row">0</th>
+                <td>z</td>
+                <td>0</td>
+                <td>L</td>
+                <td>L</td>
+              </tr>
+              <tr>
+                
+                <th scope="row">1</th>
+                <td>z</td>
+                <td>1</td>
+                <td>H</td>
+                <td>H</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">x</th>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">z</th>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+      </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th colspan="2" rowspan="2">bufif0</th>
+                <th colspan="4">CONTROL INPUT</th>
+              </tr>
+              <tr class="thread-dark">
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row" rowspan="4">S<br>I<br>G<br>N<br>A<br>L</th>
+                <th scope="row">0</th>
+                <td>0</td>
+                <td>z</td>
+                <td>L</td>
+                <td>L</td>
+              </tr>
+              <tr>
+                
+                <th scope="row">1</th>
+                <td>1</td>
+                <td>z</td>
+                <td>H</td>
+                <td>H</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">x</th>
+                <td>x</td>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">z</th>
+                <td>x</td>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th colspan="2" rowspan="2">notif1</th>
+                <th colspan="4">CONTROL INPUT</th>
+              </tr>
+              <tr class="thread-dark">
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row" rowspan="4">S<br>I<br>G<br>N<br>A<br>L</th>
+                <th scope="row">0</th>
+                <td>z</td>
+                <td>1</td>
+                <td>H</td>
+                <td>H</td>
+              </tr>
+              <tr>
+                
+                <th scope="row">1</th>
+                <td>z</td>
+                <td>0</td>
+                <td>L</td>
+                <td>L</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">x</th>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">z</th>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+        <div class="col-md-4">
+          <table class="table table-bordered text-center m-auto">
+              <tr class="thread-dark">
+                <th colspan="2" rowspan="2">notif0</th>
+                <th colspan="4">CONTROL INPUT</th>
+              </tr>
+              <tr class="thread-dark">
+                <th scope="col">0</th>
+                <th scope="col">1</th>
+                <th scope="col">x</th>
+                <th scope="col">z</th>
+              </tr>
+              <tr>
+                <th scope="row" rowspan="4">S<br>I<br>G<br>N<br>A<br>L</th>
+                <th scope="row">0</th>
+                <td>1</td>
+                <td>z</td>
+                <td>H</td>
+                <td>H</td>
+              </tr>
+              <tr>
+                
+                <th scope="row">1</th>
+                <td>0</td>
+                <td>z</td>
+                <td>L</td>
+                <td>L</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">x</th>
+                <td>x</td>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              <tr>
+               
+                <th scope="row">z</th>
+                <td>x</td>
+                <td>z</td>
+                <td>x</td>
+                <td>x</td>
+              </tr>
+              
+          </table>
+        </div>
+    </div>
+    <br>
+    
+    <p id="tri_states"><b><u>Note: -</u></b></p>
+    <ul>
+      <li>The L and H symbols in the table for tri-state gates (bufif, notif) have special meanings.</li>
+      <li>The ‘L’ symbol means output has either ‘0’ or ‘z’ value. The ‘H’ symbol means output has either ‘1’ or ‘z’ value.</li>
+      <li>This can be deduced as follows: - These gates have definite values(0,1,x,z) if control is either 0 or 1. In case there is ambiguity on control signal(x or z), the result is ‘L’ or ‘H’. For e.g. bufif0 gate, if control=1, output is z. If input are 0 or 1, and the control is x or z, the output can be either directly carried(buffered) from input or it can be in high impedance (like open) state. Hence if input =0, output is either 0 or z(L), and if input=1, output is either 1 or z(H). For both input and control being x or z, the output is unknown(x).</li>
+      <li>Follow this logic and verify tables for all the four tri-state gates.</li>
+    </ul>
+    <hr>
+    <h3 id="examples" class="font-weight-bold" style="font-size:1.25rem;">Examples: -</h3>
+    <p>We earlier did put you in a dilemma when we presented the circuit diagram. Now we will clearly show how to model that circuit in Gate-Level abstraction.</p>
+    <p id="workflow"><b><u>Workflow: -</u></b></p>
+    <ol>
+      <li>Have a clear look at the circuit diagram, and take a mental note of all the types of logic gates that are present in the circuit. Do not worry about the interconnections in this step. You may even write down these gates.</li>
+      <li>Take a note of how many inputs and outputs are present in the circuit.</li>
+      <li>Now take a closer and more detailed look into the circuit. We want you to identify all the unique wires. Note them down as variables(nets), let’s say w1, w2, w3, and so on.</li>
+      <li>In the search for unique wires, your mind also has a vague picture of the connections. This will benefit while writing code.</li>
+      <li>Start writing the code as follows: -
+        <ul>
+          <li>Declare a module, say <i>my_circuit</i>.</li>
+          <li>Declare all the input and output variables within the module definition.</li>
+          <li>Inside the module, define local nets for the interconnections, like wire w1, w2, w3; Don’t forget the semi-colon!</li>
+          <li>Start from the input side, and instantiate the Verilog primitives for the corresponding gates one by one till you reach the output nets.</li>
+          <li>In the gate definition, use the input-output variables, and the local wires to get the required interconnections.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <p>Now, we present the solution code for this circuit, keeping in mind the above workflow: -</p>
+
+    <div class="col-md-12">
+        <img class="img-fluid" src="{% static "img/gates/sol_gate.jpg"%}" alt="">
+        <h5 class="text-center">Fig. Module Inspection</h5>
+    </div>
+
+    <p><b>Verilog Primitives: -</b> not, nand, and, xor, or<br>
+        <b>Inputs: -</b>  A, B, C<br>        
+        <b>Outputs: -</b> Y<br>
+        <b>Unique wires: -</b>  w1, w2, w3, w4, w5, w6, w7<br>
+        <b>Complete Code: -</b> <br>
+    </p>
+
+<pre class="line-numbers"><code class="language-verilog"> `timescale 1ns / 1ps
+  module my_circuit(
+    input A, B, C,
+    output Y
+  );
+    wire w1, w2, w3, w4, w5, w6, w7;
+    not G1(w1, A);
+        G2(w3, w2);
+        G3(w6, w5);
+
+    nand G4(w2, B, C);
+
+    and G5(w5, w1, w4);
+        G6(w4, B, w2);
+
+    xor G7(w7, w4, w3);
+
+    or G8(y, w6, w7);
+  endmodule</code></pre>
+
+  <hr>
+  <h3 id="gate_delays" class="font-weight-bold" style="font-size:1.25rem;">Gate Delays: -</h3>
+
+  <p>Since actual hardware consists of currents and voltages carried across ports, there is definitely some delay, associated with any hardware gate. Though Verilog does not consider delays while synthesising (generating hardware circuit) the code, we may include delays in design code to get more realistic simulations.</p>
+
+  <p>While instantiating a gate primitive, we can specify appropriate delays. Delays are specified with a hash sign (#) followed by a value. (No need to specify units, the ‘timescale directive takes care of that)<br>
+  e.g.<pre class="line-numbers"><code class="language-verilog">nand #10 G1(out, in1, in2);</code></pre></p>
+
+  <p><u><b>Types of Delays: -</b></u></p>
+
+  <p>There can be three major types of delays, namely Rise, Fall and Turn-off: -
+    <ol>
+      <li>Rise delay, as the name suggests, is the time the gate output supposedly takes to transition a rise. ({0,x,z} ->1 or 0->{x,z})</li>
+      <li>Fall delay, as the name suggests, is the time the gate output supposedly takes to transition a fall. ({1,x,z}->0 or 1->{x,z})</li>
+      <li>Turn-off delay is the time the gate output supposedly takes to transition from any value to a high impedance value z (Can be remembered as delay for open circuit or Off state)</li>
+    </ol>
+    These three delays are jointly passed as a set, in the order (rise, fall, turnoff).<br>
+    e.g.<pre class="line-numbers"><code class="language-verilog">bufif1 #(8,9,10) G1(out1, out2, in1);</code></pre>
+  </p>
+
+  <p><u><b>Note: -</b></u>
+    <ul>
+      <li>If only a single value is provided, like #10, this is used for all possible transitions.</li>
+      <li>If two values are supplied, like #(10, 12), these refer to output rise and fall delays respectively.</li>
+    </ul>
+  </p>
+
+  <p><b>As per IEEE 64 LRM standard, there are a few constraints to using these delays: -</b>
+    <ul>
+      <li><b>and, nand, nor, or, xor, xnor: - The delay specification shall be zero, one, or two delays.</b> In case of two delays, the smaller of the two delays shall apply to output transitions to x.</li>
+      <li><b>buf, not: - The delay specification shall be zero, one, or two delays.</b> In case of two delays, the smaller of the two delays shall apply to output transitions to x.</li>
+      <li><b>bufif0 bufif1 notif1 notif0: - The delay specification shall be zero, one, two, or three delays.</b> In case of three delays, the smallest of the three delays shall determine the delay of transitions to x. In case of two delays, the smaller of the two delays shall apply to output transitions to x and z.</li>
+    </ul>
+    <b><u>Source: -</u></b>
+    <a href="https://www.eg.bucknell.edu/~csci320/2016-fall/wp-content/uploads/2015/08/verilog-std-1364-2005.pdf" target="_blank">&emsp;IEEE Standard for Verilog HDL</a>
+  </p>
+  <hr>
+  <p id="additional_info"><u>OPTIONAL</u><br>
+  In actual hardware circuits, the above three types of delays, may not have constant values, as there are a lot of variables involved. To take care of these issues, Verilog allows us to specify minimum, maximum, as well as typical values for any of the above delay types. In Vivado, they can be specified in <a href="https://www.xilinx.com/support/documentation/sw_manuals/xilinx2018_1/ug903-vivado-using-constraints.pdf" target="_blank">Timing Constraints Wizard: -</a><br>
+  However, unless you are working on a high level module and need to be sure of the timings, you do not need to provide such detailed delay information.
+  For the time being, you can avoid delays completely or just stick to rise, fall, and turnoff delays! ☺
+  </p>
+
+  <hr>
+
+  <p>Now we end this discussion by giving an entire solution for the earlier circuit, which includes Design Code (now with gate delays), Test Bench code, and simulation waveform as obtained in Vivado.<br>
+  <b>We strictly advise you to try these on your own first, and then look at the solution. Coding is an art, beautified only by understanding and rigorous practice.</b>
+  </p>
+  <br>
+
+  <h3 id="solution" class="font-weight-bold" style="font-size:1.25rem;">Solution Codes + Waveform: -</h3>
+
+<pre class="line-numbers"><code class="language-verilog"> //DESIGN CODE WITH GATE DELAYS
+  `timescale 1ns / 1ps
+  module my_circuit(
+    input A, B, C,
+    output Y
+  );
+    wire w1, w2, w3, w4, w5, w6, w7;
+    not #(1,2) G1(w1, A);
+               G2(w3, w2);
+               G3(w6, w5);
+
+    nand #(4,5) G4(w2, B, C);
+
+    and #(4,5) G5(w5, w1, w4);
+               G6(w4, B, w2);
+
+    xor #(4,5) G7(w7, w4, w3);
+
+    or #(4,5) G8(y, w6, w7);
+  endmodule</code></pre>  
+<br>
+<pre class="line-numbers"><code class="language-verilog"> //TESTBENCH CODE
+  `timescale 1ns / 1ps
+  module sim_my_circuit();
+    reg A, B, C;
+    wire Y;
+    
+    my_circuit test(A, B, C, Y); //Positional Association
+
+    initial
+      begin
+          A=1'bx;
+          B=1'bx;
+          C=1'bx;
+
+      #20 A=1'b0;
+          B=1'b0;
+          C=1'b0;
+
+      #20 A=1'b1;
+          B=1'b1;
+          C=1'b1;
+      end
+
+    initial
+      #100 $finish;
+  endmodule</code></pre>
+
+  <br>
+  <div class="col-md-12">
+        <img class="img-fluid" src="{% static "img/gates/waveform.jpg"%}" alt="">
+        <h5 class="text-center">Fig. Simulation Waveform</h5>
+  </div>
+
+  <p>Feel free to make your own testbench and analyse the waveform. This is a good way of knowing if the circuit is working as intended.</p>
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+    
+        <a href="#why_gate_level" class="list-group-item list-group-item-action bg-light">What and Why</a>
+        <a href="#tables" class="list-group-item list-group-item-action bg-light">Gate Tables</a>
+        <a href="#tri_states" class="list-group-item list-group-item-action bg-light">Decoding Tri States</a>
+        <a href="#examples" class="list-group-item list-group-item-action bg-light">Examples</a>
+        <a href="#gate_delays" class="list-group-item list-group-item-action bg-light">Gate Delays</a>
+        <a href="#additional_info" class="list-group-item list-group-item-action bg-light">Additional Info</a>
+        <a href="#solution" class="list-group-item list-group-item-action bg-light active">Solution</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('gatelevel').classList.add('active')
+</script>
+{% endblock %}
