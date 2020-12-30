@@ -31,6 +31,7 @@
 
       <p>The former approach is called bottom-up, and the later top-down, in design terminology. Design of complex systems involves combination of both. In Verilog, such approaches develop a combined hierarchy of individual hardware elements, which enlightens us about how each element fits in the entire ‘system’ picture. These individual elements are called ‘Modules’. So, without further ado, let us explain the what, why, and how of Verilog Modules.</p>
 
+      <hr>
       <h3 id="Modules" class="font-weight-bold" style="font-size:1.25rem;">Modules: -</h3>
 
       <p>Modules are the basic building blocks of any design in Verilog. Consider a simple two input AND gate. If you were to model it, what points would you think of. Well, you know you would need two inputs, and one output. Thus your AND module will be having the same specification.</p>
@@ -41,25 +42,24 @@
 
       <p>Verilog modules are somewhat similar. The functionality they provide can be a part of a bigger system. <u>They are connected to each other in this system, via input and output ports, which are specified by the designer.</u></p>
 
-      <p id="TypicalVerilogModule">Let us understand the syntax of a Verilog Module.<br><br>
-        module module_name(<br>
-        input input_port 1,   //list of input and output port specifications<br>                                        
-        input input_port 2,   //separated by commas.<br>
-        .<br>
-        .<br>
-        .<br>
-        output output_port 1,<br>
-        output output_port 2,<br>
-        );<br>
+      <p id="TypicalVerilogModule">Let us understand the syntax of a Verilog Module.<br>
+<pre class="line-numbers"><code class="language-verilog">  module module_name(
+	input input_port 1,   //list of input and output port specifications                                        
+    input input_port 2,   //separated by commas.
+    .
+    .
+    .
+    output output_port 1,
+    output output_port 2,
+    );
         
-        …………<br>
-        //local nets or register declarations<br>
-        …………<br>
-        //functionality or input output relations of the module.<br>
-        …………<br>
-        …………<br>
-        endmodule<br>
-        <br>
+    …………
+    //local nets or register declarations
+    …………
+    //functionality or input output relations of the module.
+    …………
+    …………
+  endmodule<br></code></pre>
       </p>
       
       <ul>
@@ -71,15 +71,15 @@
       </ul>
 
       <h><u><b>Example Gate AND: -</b></u></h>
-      <p>
-      module gate_AND (input a, input b, output y);<br>
-      assign y = a & b;<br>
-      endmodule<br>
-      </p>
+<pre class="line-numbers"><code class="language-verilog">  module gate_AND (input a, input b, output y);
+  assign y = a & b;
+  endmodule</code></pre>
+      
 
       <p><b>Now that you know how to define modules, it is time to understand how different modules can be combined together to give a bigger functionality. This brings us to module instantiations.</b>
       </p>
 
+      <hr>
       <h3 id="ModuleInstantiations" class="font-weight-bold" style="font-size:1.25rem;">Module Instantiations: -</h3>
 
       <p>In Verilog, we can implement the functionality of one module inside another module definition. Let us consider the following circuit: -</p>
@@ -94,44 +94,40 @@
       <p>Once done, your individuals modules will look something like these.</p>
 
       <div class="row">
-        <div class="col-sm-5"
-        <p>
-          module gate_AND(<br>
-          &emsp;input a,<br>
-          &emsp;input b,<br>
-          &emsp;output y<br>
-          );<br>
-          &emsp;assign y=a & b;<br>
-          endmodule<br>
-        </p>
+        <div class="col-sm-5">
+<pre class="line-numbers"><code class="language-verilog">  module gate_AND(
+	input a,
+    input b,
+    output y
+    );
+    assign y=a & b;
+  endmodule</code></pre>
+        
         </div>
         <div class="col-sm-5">
-        <p>
-          module gate_OR(<br>
-          &emsp;input a,<br>
-          &emsp;input b,<br>
-          &emsp;output y<br>
-          );<br>
-          &emsp;assign y=a|b;<br>
-          endmodule<br>
-        </p>
+<pre class="line-numbers"><code class="language-verilog">  module gate_OR(
+	input a,
+    input b,
+    output y
+    );
+    assign y=a|b;
+  endmodule</code></pre>     
         </div>
       </div>
 
       <p>Now, we can introduce working copies of these gates inside our main hardware module. In other words, we can instantiate them. This saves us from writing more code, since we can just use the ‘gate_AND’ module twice, as shown below: -</p>
 
-      <p>
-        module and_or(<br>
-        &emsp;input A, B, C, D,<br>
-        &emsp;output F<br>
-        );<br>
-        <br>
-        &emsp;wire t1, t2;  //local net declarations<br>
-        &emsp;gate_AND(A, B, t1);<br>
-        &emsp;gate_AND(C, D, t2); //module instantiations<br>
-        &emsp;gate_OR(t1, t2, F);<br><br>
-        endmodule<br>
-      </p>
+<pre class="line-numbers"><code class="language-verilog">  module and_or(
+    input A, B, C, D,
+    output F
+    );
+     
+    wire t1, t2;  //local net declarations
+    gate_AND(A, B, t1);
+    gate_AND(C, D, t2); //module instantiations
+    gate_OR(t1, t2, F);
+  endmodule</code></pre>
+      
 
 
       <p id="TrippySpots"><u><b>A few important things to note: -</b></u></p>
@@ -157,35 +153,35 @@
 
       <p>As you will see in the next article, instantiations are used inside testbench module, also known as stimulus, which are especially written to test the functional correctness of your design module, also known as Design Under Test(DUT). Let us understand this by creating and testing our design of the circuit.</p>
 
+      <hr>
       <h3 id="StimulusBlock" class="font-weight-bold" style="font-size:1.25rem;">Stimulus Block: -</h3>
 
       <p>What is stimulus? It is nothing but a trigger that brings out a response from something. Intuitively, you might have already guessed that we pass values to the variables in our DUT, and analyse the outputs obtained to check for errors. This is exactly correct.</p>
 
-      <p>
-        module test_for_design();//testbench does not have any I/O ports.<br>
-        &emsp;reg a, b, c, d;<br>
-        &emsp;wire f;<br>
+<pre class="line-numbers"><code class="language-verilog">  module test_for_design();//testbench does not have any I/O ports.
+	reg a, b, c, d;
+    wire f;
+	
+	and_or(a,b,c,d,f);
 
-        &emsp;and_or(a,b,c,d,f);<br>
+    initial
+      begin
+        #10 a=1'b0;
+        	b=1'b0;
+        	c=1'b0;
+        	d=1'b0;
 
-        &emsp;initial<br>
-        &emsp;&emsp;begin<br>
-        &emsp;&emsp;&emsp;#10&emsp;a=1'b0;<br>
-        &emsp;&emsp;&emsp;&emsp;b=1'b0;<br>
-        &emsp;&emsp;&emsp;&emsp;c=1'b0;<br>
-        &emsp;&emsp;&emsp;&emsp;d=1'b0;<br>
-
-        &emsp;&emsp;&emsp;#10&emsp;b=1'b1;<br>
-        &emsp;&emsp;&emsp;&emsp;c=1'b1;<br>
-        &emsp;&emsp;&emsp;&emsp;d=1'b1;<br>
-        &emsp;&emsp;end<br>
-        endmodule<br>
-      </p>
+        #10	b=1'b1;
+        	c=1'b1;
+        	d=1'b1;
+       end
+  endmodule</code></pre>
 
       <p>This will be explained in detail in the next article. Right now, we have just given the testbench for our DUT done earlier. You can come back to this after reading the next article, and have a thorough understanding. ☺<br><br>
       By now, you know how to instantiate modules to get a larger functionality. <u>But, there are some rules to this, which must be taken care of for correct hardware modelling. These are called port mapping rules.</u> Let us see what are these.
       </p>
 
+      <hr>
       <h3 id="PortMap" class="font-weight-bold" style="font-size:1.25rem;">Port Mapping Rules: -</h3>
 
       <p>If a module is thought of as a black box, with wires sticking out either as input or output, then these wires can be connected to other modules. But what if the diameter of wires in the two modules do not match. They won’t fit right?</p>

@@ -1,0 +1,78 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Code Block
+{% endblock %}
+
+{% block content%}
+
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Code Block</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  <div class="col-lg-3">
+    <div class="pl-5" id="sidebar">
+      <div class="sidebar-heading">Articles </div>
+      <div class="list-group list-group-flush">
+        <a href="/intro1" class="list-group-item list-group-item-action">INTRO-I</a>
+        <a href="/intro2" class="list-group-item list-group-item-action">INTRO-II</a>
+        <a href="/verilog-basics-1" class="list-group-item list-group-item-action">Verilog Basics-I</a>
+        <a href="#" class="list-group-item list-group-item-action">Verilog Basics-II</a>
+        <a href="/digital-basics" class="list-group-item list-group-item-action">Digital Basics</a>
+        <a href="/modules-and-port-mappings" class="list-group-item list-group-item-action">Modules and Port Mappings</a>
+        <a href="/code-block" class="list-group-item list-group-item-action active">Code Block</a>
+      </div>
+    </div>
+  </div>
+  <div id="page-content-wrapper" class="col-lg-6 border-left border-right mb-5">
+
+    <div class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Code Block</h1>
+      <hr>
+      
+      <link href="{% static "css/prism.css"%}" rel="stylesheet" />
+      <link rel="stylesheet" href="{% static "css/prism1.css"%}" data-noprefix />
+      <script src="{% static "js/prism.js"%}"></script>
+      <script src="{% static "js/prism1.js"%}"></script>
+      <pre class="line-numbers">
+        <code id="formattedBlock" class="language-verilog">
+        module and_or(
+        &emsp;input A, B, C, D,
+        &emsp;output F
+        );
+        &emsp;wire t1, t2;  //local net declarations
+        &emsp;gate_AND(A, B, t1);
+        &emsp;gate_AND(C, D, t2); //module instantiations
+        &emsp;gate_OR(t1, t2, F);
+        endmodule
+        </code>
+      </pre>
+    
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-3 d-xl-block">
+    <div class="pl-3 sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group list-group-flush">
+        <a href="#one" class="list-group-item list-group-item-action bg-light active">One</a>
+        <a href="#two" class="list-group-item list-group-item-action bg-light">Two</a>
+        <a href="#three" class="list-group-item list-group-item-action bg-light">Three</a>
+        <a href="#four" class="list-group-item list-group-item-action bg-light">Four</a>
+        <a href="#five" class="list-group-item list-group-item-action bg-light">Five</a>
+        <a href="#six" class="list-group-item list-group-item-action bg-light">Six</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
