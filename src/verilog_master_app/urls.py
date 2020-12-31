@@ -9,6 +9,9 @@ urlpatterns = [
     path('verilog-basics-1/',views.verilogbasics1, name="verilogbasics1"),
     path('digital-basics/',views.digital_basics,name="digital_basics"),
     path('modules-and-port-mappings/',views.modules_and_port_mappings, name="modules_and_port_mappings"),
+    path('gate-level-modelling/',views.gate_level_modelling, name="gate_level_modelling"),
     path('behavioral-2/',views.behavioral_2,name="behavioral2"),
+    path('half-adder/',views.half_adder,name="half_adder"),
+    path('mux/',views.mux,name="mux"),
 
 ]

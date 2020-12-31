@@ -1,0 +1,186 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Half Adder
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Half Adder</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Half Adder</h1>
+      <hr>
+      <p id="intro">Well, now that you know how to code a simple expression, let us start with the most basic digital circuit – a half adder. 
+      Adder circuits are central to any arithmetic unit. A half adder adds two 1-bit binary numbers. The truth table is shown below: -</p>
+
+      <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th>A(1-bit)</th>
+                <th>B(1-bit)</th>
+                <th>Sum 'S'</th>
+                <th>Carry 'C'</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>0</th>
+                <th>0</th>
+                <th>0</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>0</th>
+                <th>1</th>
+                <th>1</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>0</th>
+                <th>1</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>1</th>
+                <th>0</th>
+                <th>1</th>
+              </tr>
+
+            </tbody>
+      </table>
+
+      <p>
+      <br>
+      Let us try to get expressions for Sum and Carry in terms of the two input variables A and B.<br>
+      Adding the minterms, we get: -<br>
+      <b>S = A’B + AB’ = A XOR B</b><br>
+      <b>C = AB</b><br>
+      Since we have the expressions, let us do dataflow modelling first.
+      </p>
+      <hr>
+      <h3 id="dataflow" class="font-weight-bold" style="font-size:1.25rem;">Dataflow Modelling: -</h3>
+
+<pre class="line-numbers"><code class="language-verilog">  module half_adder(
+  input A, B,
+  output S, C
+  );
+    assign S=A ^ B; //using bitwise XOR operator. S=(~A & B)|(A & ~B) also correct.
+    assign C=A & B;
+  endmodule</code></pre>
+
+      <p>Now, from the expression, you can easily deduce that the circuit of half adder requires 1 XOR gate (for sum term) and 1 AND gate (for carry term). With this knowledge in mind, let us do the gate level code.</p>
+
+      <hr>
+      <h3 id="gate_level" class="font-weight-bold" style="font-size:1.25rem;">Gate Level Modelling: -</h3>
+
+      <p>First, have a look at the circuit diagram. (Remember the <a href="/gate-level-modelling#examples" target="_blank">Gate Level Workflow</a>.)</p>
+
+      <div class="col-md-12">
+        <img class="img-fluid" src="{% static "img/gates/rtl.jpg"%}" alt="">
+        <h5 class="text-center">Fig. RTL Diagram generated in Vivado</h5>
+      </div>
+
+      <p>Applying the same steps as given in workflow, the code is written as shown: -</p>
+
+<pre class="line-numbers"><code class="language-verilog">  module half_adder(
+  input A, B,
+  output reg S, C //only registers can be assigned inside procedural block
+  );
+    gate xor G1(S, A, B);
+    gate and G2(C, A, B);
+  endmodule</code></pre> 
+      <br>
+      <p>Now, time to do the behavioural implementation of half adder circuit.</p>
+      <hr>
+
+      <h3 id="behavioural" class="font-weight-bold" style="font-size:1.25rem;">Behavioural Modelling: -</h3>           
+<pre class="line-numbers"><code class="language-verilog">  module half_adder(
+  input A, B,
+  output S, C
+  );
+    always@(*) //active if any of the inputs changes
+      begin
+        S = A ^ B;
+        C = A & B; //a shortcut way is {C, S} = A + B;
+        /* {C, S} = A + B first adds A, B and assigns the resultant bits to S(1-bit here). 
+        If result exceeds bit size of S(in case of carry), the extra bit is assigned to C.*/
+      end
+  endmodule</code></pre>     
+
+      <br>
+      <p>Well done! Now you know how to build a half adder in three abstraction levels. Wait, aren’t you forgetting something? You need to ensure that your design works correctly. In order to do that, you must write a testbench for your half adder and check input and output waveforms.</p>
+      <hr>
+      <br>
+      <h3 id="test" class="font-weight-bold" style="font-size:1.25rem;">TestBench + Waveform: -</h3>
+      <p>Try writing a testbench on your own first. If you get stuck, you can always look at the solution below. Remember, only one testbench is enough to test all the above design abstractions.</p>
+
+<pre class="line-numbers"><code class="language-verilog">  module test_halfadder();
+    reg A, B;
+    wire S, C;
+    
+    half adder test_adder(A, B, S, C);
+
+    initial
+      begin
+          A = 1'b0;
+          B = 1'b0;
+      
+      #20 A = 1'b0;
+          B = 1'b1;
+
+      #20 A = 1'b1;
+          B = 1'b0;
+
+      #20 A = 1'b1;
+          B = 1'b1;
+
+      end
+
+    initial
+      #100 $finish;
+  endmodule</code></pre> 
+
+      <br>
+      <p id="sim_waveform">Have a look at the simulation waveform generated in Vivado.</p>
+
+      <div class="col-md-12">
+        <img class="img-fluid" src="{% static "img/gates/half_adder_sim.jpg"%}" alt="">
+        <h5 class="text-center">Fig. Half Adder Waveform</h5>
+      </div>
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#dataflow" class="list-group-item list-group-item-action bg-light">Dataflow</a>
+        <a href="#gate_level" class="list-group-item list-group-item-action bg-light">Gate Level</a>
+        <a href="#behavioural" class="list-group-item list-group-item-action bg-light">Behavioural</a>
+        <a href="#test" class="list-group-item list-group-item-action bg-light">Simulation</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('halfadder').classList.add('active')
+</script>
+{% endblock %}
+

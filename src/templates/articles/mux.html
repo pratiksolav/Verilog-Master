@@ -1,0 +1,324 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Multiplexers
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Multiplexers</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Multiplexers</h1>
+      <hr>
+      <h3 id="mux_dmux" class="font-weight-bold" style="font-size:1.25rem;">MUX & DEMUX:</h3>
+
+      <p>While writing design descriptions for large digital systems many times a single-line is required to carry on two or more digital signals. But at a time only one signal can be placed on a line and what we require is a device that will allow us to select and redirect a particular signal out of a bunch of inputs to a specific output line. Such a device is referred to as a <strong class="font-italic">multiplexer</strong>.</p>
+
+      <p>A demultiplexer is very similar to a multiplexer; the only difference being that it takes in a single input line and connects to multiple output lines. The function of a multiplexer is to select the input of any ‘n’ input lines and feed that to one output line. The function of a demultiplexer is to inverse the function of the multiplexer. The shortcut forms of multiplexer and demultiplexer are <strong>mux</strong> and <strong>demux</strong> respectively.</p>
+
+      <p>In this section we will discuss in detail types of mux and demux, their logical expressions, block diagrams and Verilog description in all three levels of abstraction. Further we will cover implementation of higher order mux (8x1) from lower order muxes (2x1,4x1). So, let’s get started!</p>
+      <hr>
+
+      <h3 id="intro" class="font-weight-bold" style="font-size:1.25rem;">Intro to MUX:</h3>
+      <p>    Every multiplexer has n inputs and a single output. But how do we select the input that has to be redirected? We use select lines to pull this off. A mux with n inputs has precisely log<sub>2</sub>n select lines. So accordingly a 2x1 mux has 1 select line, 4x1 has 2, 8x1 has 3 and so on.</p>
+
+      <p>    Some examples of multiplexers are given below. The examples include a schematic, a logical expression and a truth table. To get a clear understanding of expressions make sure to have covered the article on     <a href="/digital_basics">“Boolean Algebra”</a> .</p>
+
+      <p>    At the end, a Verilog Code for an 8x1 multiplexer is given. It will give you a clear idea of writing model descriptions in Verilog. You can then write your own code for many other multiplexers and sizes.</p>
+      <hr>
+
+      <h3 id="2x1" class="font-weight-bold" style="font-size:1.25rem;">2x1 multiplexer:</h3>
+      <div class="d-flex flex-column">
+        <div class="row my-3">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/mux.jpg"%}" alt="2x1 Multiplexer">
+            <h5 class="text-center">Fig. A 2x1 multiplexer</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Select Line</th>
+                  <th>Output</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>S<sub>0</sub></th>
+                  <th>F</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>I<sub>0</sub></td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>I<sub>1</sub></td>
+                </tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p>F = S<sub>0</sub>&#x0101;I<sub>0</sub> + S<sub>1</sub>I<sub>1</sub></p>
+      <p>Here, S0 is the select line F is the output and I0,I1 are the mux input lines. When S0 is 0 I0 is selected and when S0 is 1 I1 is selected. These appear in the output as F = I0 and F = I1 respectively.</p>
+      <hr>
+
+      <h3 id="4x1" class="font-weight-bold" style="font-size:1.25rem;">4x1 multiplexer:</h3>
+      <div class="d-flex flex-column">
+        <div class="row my-3">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/mux.jpg"%}" alt="4x1 Multiplexer">
+            <h5 class="text-center">Fig. A 4x1 multiplexer</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="2">Select Lines</th>
+                  <th>Output</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>S<sub>1</sub></th>
+                  <th>S<sub>0</sub></th>
+                  <th>F</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>I<sub>0</sub></td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>I<sub>1</sub></td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>I<sub>2</sub></td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>I<sub>3</sub></td>
+                </tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p>----Equation Here----</p>
+      <p>Here, we have two select lines namely S0 and S1, where S0 is the MSB and S1 is the LSB. As given in the truth table, for a particular binary combination of S0 and S1, corresponding input is connected to output.</p>
+      <hr>
+
+      <h3 id="8x1" class="font-weight-bold" style="font-size:1.25rem;">8x1 multiplexer:</h3>
+      <div class="d-flex flex-column">
+        <div class="row my-3">
+          <div class="col-md-6">
+            <img class="img-fluid" src="{% static "img/gates/mux.jpg"%}" alt="8x1 Multiplexer">
+            <h5 class="text-center">Fig. A 8x1 multiplexer</h5>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th colspan="3">Select Lines</th>
+                  <th>Output</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>S<sub>2</sub></th>
+                  <th>S<sub>1</sub></th>
+                  <th>S<sub>0</sub></th>
+                  <th>F</th>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>I<sub>0</sub></td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>I<sub>1</sub></td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>I<sub>2</sub></td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>I<sub>3</sub></td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>I<sub>4</sub></td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1</td>
+                  <td>I<sub>5</sub></td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>I<sub>6</sub></td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>I<sub>7</sub></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p>----Equation Here----</p>
+      <p>As given, an 8x1 mux has 3 select lines and 8 inputs. The working of this device is similar to what you have seen in the previous two examples. Don’t get overwhelmed by the above Boolean expression. It is a very simple representation of how inputs are redirected by select lines to the output. You can always refer to the article on <a href="/digital_basics">“Boolean Algebra”</a> for a quick revision.</p>
+      <hr>
+
+      <h3 id="codes" class="font-weight-bold" style="font-size:1.25rem;">Verilog Codes:</h3>
+      <p>Verilog description for an 8x1 multiplexer in three levels of abstraction is given below with a simulation output in Xilinx Vivado.</p>
+      <h3 id="loops" class="font-weight-bold" style="font-size:1.25rem;">Gate Level</h3>
+
+<pre class="line-numbers"><code class="language-verilog"> module mux_8x1_gate (
+  input [7:0]I,
+  [2:0]S,
+  output F);
+
+  wire [10:0]w;
+  not(w[0],s0);
+  not(w[1],s1);
+  not(w[2],s2);
+  and(w[3],I[0],w[0],w[1],w[0]);
+  and(w[4], I[1],w[0],w[1] ,s[0]);
+  and(w[5], I[2],w[0],s[1] ,w[0]);
+  and(w[6], I[3],w[0],s[1] ,s[0]);
+  and(w[7], I[4],s[2],w[1],w[0]);
+  and(w[8], I[5],s[2],w[1],s[0]);
+  and(w[9], I[6],s[2],s[1],w[0]);
+  and(w[10],I[7],s[2],s[1],s[0]);
+  or(F,w[3], w[4], w[5], w[6], w[7], w[8], w[9], w[10]);
+  endmodule
+</code></pre><br>
+
+<h3 id="loops" class="font-weight-bold" style="font-size:1.25rem;">Dataflow</h3>
+
+<pre class="line-numbers"><code class="language-verilog"> module mux_8x1_dataflow(
+  input [7:0]I,
+  [2:0]s,
+  output F);
+
+  assign s0_bar = ~s[0];
+  assign s1_bar = ~s[1];
+  assign s2_bar = !~s[2];
+  assign F = (I[0]& s0_bar & s1_bar & s2_bar) |(I[1]& s0_bar & s1_bar & s[2])| (I[2]& s0_bar & s[1] & s2_bar)| (I[3]& s0_bar & s[1] & s[2])| (I[4]& s[0] & s1_bar & s2_bar)| (I[5]& s[0] & s1_bar & s[2])| (I[6]& s[0] & s[1] & s2_bar)| (I[7]& s[0] & s[1] & s[2])
+  endmodule</code></pre><br>
+
+  <h3 id="loops" class="font-weight-bold" style="font-size:1.25rem;">Behavioral</h3>
+
+<pre class="line-numbers"><code class="language-verilog"> module mux_8x1_behavioral(
+  input [7:0]I,
+  [2:0]S,
+  output reg F);
+
+  always@(S)
+  begin
+      case(S):
+      3’b000: F = I[0];
+      3’b001: F = I[1];
+      3’b010: F = I[2];
+      3’b011: F = I[3];
+      3’b100: F = I[4];
+      3’b101: F = I[5];
+      3’b110: F = I[6];
+      3’b111: F = I[7];
+  endcase
+  end</code></pre><br>
+  
+  <h3 id="loops" class="font-weight-bold" style="font-size:1.25rem;">Testbench</h3>
+
+<pre class="line-numbers"><code class="language-verilog"> module Test;
+  reg [7:0]a;
+  reg [2:0]sel;
+  wire y;
+  integer i;
+  
+  mux_8x1_behavioral M(a,sel,y);
+  initial 
+  begin
+   a[0] = 0; a[1] = 0;
+   a[2] = 1; a[3] = 1;
+   a[4] = 0; a[5] = 1;
+   a[6] = 0; a[7] = 1;
+  end
+  initial
+  begin
+      for(i=0;i&#60;8;i=i+1)
+      begin    
+          sel &#60;= i;
+          #5;
+      end
+      $finish;
+  end
+  
+  endmodule  
+</code></pre><br>
+
+<h3 id="loops" class="font-weight-bold" style="font-size:1.25rem;">Simulation Results</h3>
+<img class="img-fluid" src="{% static "img/gates/sim-mux.png"%}" alt="8x1 Multiplexer">
+      <strong class="font-italic">&emsp;Keep learning with Verilog Master!</strong>
+    </div>
+
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#mux_dmux" class="list-group-item list-group-item-action bg-light">MUX & DMUX</a>
+        <a href="#intro" class="list-group-item list-group-item-action bg-light">Intro to MUX</a>
+        <a href="#2x1" class="list-group-item list-group-item-action bg-light">2x1 MUX</a>
+        <a href="#4x1" class="list-group-item list-group-item-action bg-light">4x1 MUX</a>
+        <a href="#8x1" class="list-group-item list-group-item-action bg-light">8x1 MUX</a>
+        <a href="#codes" class="list-group-item list-group-item-action bg-light active">Verilog Codes</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('mux').classList.add('active')
+</script>
+{% endblock %}

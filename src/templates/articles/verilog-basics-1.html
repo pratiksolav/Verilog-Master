@@ -12,7 +12,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <ol>
         <li><a href="/">Home</a></li>
-        <li>Verilog Basics 1</li>
+        <li>Verilog Basics-I</li>
       </ol>
     </div>
 
@@ -31,7 +31,7 @@
       
       <p id="Pressure Cooker">There are a lot of concepts which are interrelated. One cannot be explained fully without knowledge of the other. In spite of the best of our efforts, some terms may creep into the explanation. Don’t worry. For this, we have designed a <b>‘Pressure Cooker’(PC)!</b> This is simply a box containing all terms in the article, which cannot be explained yet, but which are required for full understanding. We will show it at the end of each article, so you can track them, and when we explain later, co-relate.
       </p>
-      
+      <hr>
       <h3 class="font-weight-bold" style="font-size:1.25rem;">Data Types: -</h3>
       
       <p id="DataTypes">Broadly, there are two data types here- Net and Register. Let us start with ‘Nets’.</p>
@@ -51,10 +51,9 @@
             <h5 class="text-center">Fig. 2-Input AND gate</h5>
         </div>
         <div class="col-md-6">
-<pre><code>
-  wire X; <br>
-  assign X = A & B; //'assign' used for continuous assignment. <i>PC-2</i> <br> 
-</code></pre>
+<pre class="line-numbers"><code class="language-verilog">  wire X;
+  assign X = A & B; 
+  //'assign' used for continuous assignment(PC-2).</code></pre>
         </div>
       </div>
       Here the output X can be a wire, since the signal at the output port of the gate directly drives ‘X’ at all times. Have a glimpse at the code snippet.  <br><br>
@@ -67,19 +66,20 @@
             <h5 class="text-center">Fig. wired AND</h5>
         </div>
         <div class="col-md-6">
-            wand X;<br>
-            assign X=A;<br>
-            assign X=B;<br>
+<pre class="line-numbers"><code class="language-verilog">  wand X;
+  assign X=A;
+  assign X=B;</code></pre>
         </div>
       </div>
       <li><u>wor</u></li>
         This stands for wired-OR. Only difference from a wand is that an OR gate is used instead of AND. The resultant variable gets the OR of the two drivers.<br><br>
       <li><u>tri</u></li>
-        Whenever there are multiple signals driving a single net, the net is declared as type ‘tri’. In case of any logic ambiguity, strength level of the driver is used (Strength level added as <i>PC-3</i>). Consider this code snippet: -<br><br>
-        wire a, b, control;<br>
-        tri y;<br>
-        bufif0 G1(y, a, control);//bufif is a predefined logic gate in Verilog. <i>PC-4</i><br>
-        bufif1 G2(y, b, control);<br><br>
+        Whenever there are multiple signals driving a single net, the net is declared as type ‘tri’. In case of any logic ambiguity, strength level of the driver is used (Strength level added as <i>PC-3</i>). Consider this code snippet: -<br>
+<pre class="line-numbers"><code id="formattedBlock" class="language-verilog">  wire a, b, control;
+  tri y;
+  bufif0 G1(y, a, control);//bufif is a predefined logic gate in Verilog(PC-4)
+  bufif1 G2(y, b, control);</code></pre>
+
         Here input a drives the output if control is logic 0, and input b drives the output if control is logic 1.<br><br>
 
         There are also some other net types, such as trior, triand, trireg, tri0, tri1. For most of your modelling, you may not need them. So you can skip through these. Still, we wind them up with short descriptions (can be found at Xilinx documentation): -<br>
@@ -94,6 +94,7 @@
           </li>
         </ul>
       </p>
+      <hr>
       <h><u><b>Registers: -</b></u></h>
       
       <p id="Registers">Registers are similar to variables in C. They store a value, and retain that as long as they are not overridden with another value. Do NOT confuse these with hardware registers. These refer to just variables that store some value. Unlike nets, no driver is required for register type variables. Their values can be changed anytime by giving a new value.</p>
@@ -101,59 +102,61 @@
       <p>Strictly speaking, ‘register’ is a keyword, which holds several data types, as discussed below: -</p>
       <li><u>reg</u></li>
       This is the most frequently used register data type. It is used to denote any signal without a driver, which needs to hold a value. This is often useful, in hardware modelling since we may need that signal value for some later computation. It is treated as an unsigned number in arithmetic expressions.<br>
-      wire a, b;<br>
-      reg y;<br>
-      y=a & b;//This is procedural assignment. Will be explained in <a href="#">Behavioral Modelling</a>.<br>
-      <br>
+      
+<pre class="line-numbers"><code class="language-verilog">  wire a, b;
+  reg y;
+  y=a & b;//This is procedural assignment. Will be explained in Behavioral Modelling.</code></pre>
+
+
       <li><u>integer</u></li>
       This is similar to ‘int’ data type in C, but here the keyword is ‘integer’. It can only store an integer value. By default, it is treated as a 32 bit 2’s complement signed integer. A variable of integer type is most commonly used for counting the execution of loops such as for, while, etc. Loops shall be explained later in behavioural modelling.<br>
-      integer count;<br>
-      for(count=1; count<=10; count=count+1);<br>
-      &emsp;a=count;<br>
-      <br>
+
+<pre class="line-numbers"><code class="language-verilog">  integer count;
+  for(count=1; count<=10; count=count+1);
+    a=count;</code></pre>
+  
       <li><u>real</u></li>
       As the name suggests, it is used to store floating point numbers. In case any real variable is assigned to an integer, it is rounded off.<br>
-      real pi;<br>
-      pi=314.15e-2;//both scientific and normal decimal notations can be used<br>
-      <br>
+<pre class="line-numbers"><code class="language-verilog">  real pi;
+  pi=314.15e-2;//both scientific and normal decimal notations can be used</code></pre>
+
+
       <li><u>time</u></li>
       Variables of ‘time’ data type are exclusively used to store system simulation time.<br>
-      time current_time;<br>
-      current_time = $time;//<i>'$time'</i> gives the system simulation time.<br>
-    </p>
+<pre class="line-numbers"><code class="language-verilog">  time current_time;
+  current_time = $time;//'$time' gives the system simulation time.</code></pre> 
+
     <p id="Synthesis_example"><u><b>Note: -</b></u></p>
     <p>The Verilog code can be synthesised into a hardware circuit, by the software tool, as we will show later. During synthesis, a ‘net’ variable maps to a physical wire, but a ‘register’ variable may be mapped to either a physical wire or a storage cell. Usually when there is incomplete specification, a storage cell(<a href="#">latch</a>) may be generated. See the code below: -<br>
-      begin<br>
-      &emsp;if(!load)<br>     
-      &emsp; &emsp; t=data;<br>     
-      &emsp; &emsp; d_out=!t;<br>                     
-      end<br>
-      /* If load =0, we have a value for t. But for load =1, no else condition is given. Hence a latch is generated to retain previous t value. */<br>
+<pre class="line-numbers"><code class="language-verilog">  begin
+  if(!load)
+    t=data;    
+  d_out=!t;                     
+  end
+  /* If load =0, we have a value for t. But for load =1, no else condition is given. Hence a latch is generated to retain previous t value. */</code></pre>
     </p>
 
     <h><u><b>Parameters: -</b></u></h>
     <p id="Parameters">Parameters are used to specify constants inside a Verilog Code. They are initialised at the time of declaration, and remain constant throughout the code. This is very useful as it allows for flexible codes. For e.g. We can include a parameter N for an N-bit counter, and change N as per our requirement.</p>
-    parameter N=8;<br>
-    reg count[N-1:0];//reg count[0:N-1] also acceptable.<br>
-    /* count is a reg type <i>vector</i>. Vectors explained in the next section. */
-    <br>
-    <br>
+<pre class="line-numbers"><code class="language-verilog">  parameter N=8;
+  reg count[N-1:0];//reg count[0:N-1] also acceptable.
+  /* count is a reg type vector. Vectors explained in the next section. */</code></pre>  
+    
     <u>This ends our discussion of the basic data types. Now using these types, we can define single bit width variables, or multiple width variables, namely vectors and arrays.</u><br><br>
 
+    <hr>
     <h><u><b>Vectors: -</b></u></h>
     <p id="Vectors">Vectors are multiple bit width variables. The bit indexes are numbered from 0 to    N-1, where N is the bit size or the width of the vector variable. Note that vector is NOT a data type. Rather it is a collected entity of data of any one type, as discussed in the previous section.<br>
     Now both the two extreme index numbers can be either the Most Significant Bit(MSB) or the Least Significant Bit(LSB). But the vector range is always seen as [MSB:LSB]. The MSB index might be 0 or N-1. Same for LSB index. See the parameter code  above.
     </p>
     <u>Accesing Vector Data: -</u><br>
     Each individual bit, or any number of consecutive bits can be accessed in a vector. While selecting more than one bits:- the order must go from MSB side to LSB side, irrespective of whether MSB has 0 or N-1 index. In the below code, ‘b’ cannot be assigned as count[2:5].<br>
-    <br>
-    parameter N=8;<br>
-    reg count[N-1:0];<br>
-    reg a;<br>
-    reg [3:0] b;//4-bit vector<br>
-    a=count[0];<br>
-    b=count[5:2];<br>
-    <br>
+<pre class="line-numbers"><code class="language-verilog">  parameter N=8;
+  reg count[N-1:0];
+  reg a;
+  reg [3:0] b;//4-bit vector
+  a=count[0];
+  b=count[5:2];</code></pre>
 
     <h><u><b>Arrays: -</b></u></h>
     <p id="Arrays">Arrays are multiple entities that are either 1-bit or N-bit wide. Only reg, integer, and time types can support arrays. Multiple bit width arrays are constructed using vectors. Think of these as a rectangular grid, where the number of columns are equal to the number of bits in the vector, and each individual row represents a vector. In arrays, we can only access the entire row as a single entity. We cannot access directly a single element.
@@ -167,6 +170,7 @@
     <p>Well done! By now, you know all the basic data types in Verilog, along with some exposure to code snippets. Let this float around in your subconscious, till we start up on the coding. ☺</p>
     <p>Uhh! So many things, so many terms! Our pressure cooker must be quite a lot by now. How about we release some of that pressure XD?</p>
     
+    <hr>
     <h id="ValueSet"><u><b>Value Set: - (Time to release PC-1)</b></u></h>
     Now, you might have heard of logic LOW and logic HIGH in digital circuitry. In Verilog, the variables can have four values, viz.
     <ol>
