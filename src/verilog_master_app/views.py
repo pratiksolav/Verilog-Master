@@ -41,3 +41,6 @@ def gate_level_modelling(request):
 
 def behavioral_2(request):
 	return render(request,'articles/behavioral-2.html')
+
+def half_adder(request):
+	return render(request,'articles/half-adder.html')
