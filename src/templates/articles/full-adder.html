@@ -1,0 +1,244 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Full Adder
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Full Adder</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Full Adder</h1>
+      <hr>
+      <p id="intro">A Full Adder adds three 1-bit numbers. So, it takes 3 inputs – let’s say A, B and Ci, and generates two outputs – Sum and Carry. The truth table is as shown: -</p>
+
+      <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th>A(1-bit)</th>
+                <th>B(1-bit)</th>
+                <th>Ci(1-bit)</th>
+                <th>Sum 'S'</th>
+                <th>Carry 'Cout'</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>0</th>
+                <th>0</th>
+                <th>0</th>
+                <th>0</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>0</th>
+                <th>0</th>
+                <th>1</th>
+                <th>1</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>0</th>
+                <th>1</th>
+                <th>0</th>
+                <th>1</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>0</th>
+                <th>1</th>
+                <th>1</th>
+                <th>0</th>
+                <th>1</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>0</th>
+                <th>0</th>
+                <th>1</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>0</th>
+                <th>1</th>
+                <th>0</th>
+                <th>1</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>1</th>
+                <th>0</th>
+                <th>0</th>
+                <th>1</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>1</th>
+                <th>1</th>
+                <th>1</th>
+                <th>1</th>
+              </tr>
+
+            </tbody>
+      </table>
+      <br>
+      <p>
+      <b><u>Note: -</u></b><br> Here, <i>Ci</i> and <i>Cout</i> are used to denote input and output carry respectively. Intuitively, you may see it this way. While we are adding any 2-digit number, we can often get a carry from the one’s place to the hundreds place. So now, you have to add this carry to the two numbers in hundreds places’. Thus, you add 3 numbers. Similarly, in multiple-bit additions in adder circuits, we may get input carry from previous bit stages. Hence a full adder, capable of adding three bits is essential.
+  	  </p>  
+  	  
+      <p>
+      <b><u>Sum of Product(SOP) expressions: -</u></b><br>
+      S = A’.B’.Ci + A’.B.Ci’ + A.B’.Ci’ + A.B.Ci = Ci.(A’.B’ + A.B) + Ci’.(A.B’ + A’.B) = Ci XOR (A XOR B)<br>
+	  Cout = A’.B.Ci + A.B’.Ci + A.B.Ci’ + A.B.Ci = A.B + B.Ci + Ci.A (using K-map reduction)<br>
+	  Aliter form of Cout: - Cout = A.B + Ci.(A’.B + A.B’)<br>
+
+	  </p>
+      <hr>
+      <h3 id="dataflow" class="font-weight-bold" style="font-size:1.25rem;">Dataflow Modelling: -</h3>
+
+<pre class="line-numbers"><code class="language-verilog">  module full_adder(
+  input a, b, ci,
+  output s, cout
+  );
+    assign s = ci ^ (a ^ b); 
+    assign cout = (ci & (a ^ b)) | (a & b);
+  endmodule</code></pre>
+
+      <p>Now, from the expression, you can easily deduce that the circuit of full adder requires 2 XOR gates (for sum term), 2 AND gates and 1 OR gate.(for carry term). With this knowledge in mind, let us do the gate level code.</p>
+
+      <hr>
+      <h3 id="gate_level" class="font-weight-bold" style="font-size:1.25rem;">Gate Level Modelling: -</h3>
+
+      <p>First, have a look at the circuit diagram. (Remember the <a href="/gate-level-modelling#examples" target="_blank">Gate Level Workflow</a>.)</p>
+
+      <div class="col-md-12">
+        <img class="img-fluid" src="{% static "img/gates/full_adder_rtl.jpg"%}" alt="">
+        <h5 class="text-center">Fig. RTL Diagram generated in Vivado</h5>
+      </div>
+
+      <p>Applying the same steps as given in workflow, the code is written as shown: -</p>
+
+<pre class="line-numbers"><code class="language-verilog">  module full_adder(
+  input a, b, ci,
+  output s, cout 
+  );
+  	wire [2:0] w; //3-bit vector used for 3 wires
+    xor G1(w[0], a, b),
+    	G2(s, ci, w[0]);
+
+    and G3(w[1], w[0], ci), //notice ',' separator for multiple gates of same type
+    	G4(w[2], a, b);
+
+    or G5(cout, w[1], w[2]);
+  endmodule</code></pre> 
+      <br>
+      <p>Let's move on to the behavioural implementation of full adder circuit.</p>
+      <hr>
+
+      <h3 id="behavioural" class="font-weight-bold" style="font-size:1.25rem;">Behavioural Modelling: -</h3>           
+<pre class="line-numbers"><code class="language-verilog">  module full_adder(
+  input a, b, ci,
+  output reg s, cout
+  );
+    always@(*) //active if any of the inputs changes
+      begin
+        {cout, s} = A + B + C;
+		/* Instead of this the SOP expressions derived can also be used to assign 
+		's' and 'cout' separately*/
+      end
+  endmodule</code></pre>     
+
+      <br>
+      <hr>
+      <br>
+      <h3 id="test" class="font-weight-bold" style="font-size:1.25rem;">TestBench + Waveform: -</h3>
+
+<pre class="line-numbers"><code class="language-verilog">  module test_fulladder();
+    reg a, b, ci;
+    wire s, cout;
+    
+    full_adder test(a, b, ci, s, cout);
+
+    initial
+      begin
+          a = 1'b0;
+          b = 1'b0;
+          ci = 1'b0;
+      
+      #20 a = 1'b0;
+          b = 1'b0;
+          ci = 1'b1;
+
+      #20 a = 1'b0;
+          b = 1'b1;
+          ci = 1'b0;
+
+      #20 a = 1'b0;
+          b = 1'b1;
+          ci = 1'b1;
+
+      #20 a = 1'b1;
+          b = 1'b0;
+          ci = 1'b0;
+
+      #20 a = 1'b1;
+          b = 1'b0;
+          ci = 1'b1;
+
+      #20 a = 1'b1;
+          b = 1'b1;
+          ci = 1'b0;
+
+      #20 a = 1'b1;
+          b = 1'b1;
+          ci = 1'b1;
+
+      end
+
+    initial
+      #200 $finish;
+  endmodule</code></pre> 
+
+      <br>
+      <p id="sim_waveform">Have a look at the simulation waveform generated in Vivado.</p>
+
+      <div class="col-md-12">
+        <img class="img-fluid" src="{% static "img/gates/full_adder_waveform.jpg"%}" alt="">
+        <h5 class="text-center">Fig. Full Adder Waveform</h5>
+      </div>
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#dataflow" class="list-group-item list-group-item-action bg-light">Dataflow</a>
+        <a href="#gate_level" class="list-group-item list-group-item-action bg-light">Gate Level</a>
+        <a href="#behavioural" class="list-group-item list-group-item-action bg-light">Behavioural</a>
+        <a href="#test" class="list-group-item list-group-item-action bg-light">Simulation</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('fulladder').classList.add('active')
+</script>
+{% endblock %}
+

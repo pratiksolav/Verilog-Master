@@ -81,8 +81,8 @@
   input A, B,
   output S, C
   );
-    assign S=A ^ B; //using bitwise XOR operator. S=(~A & B)|(A & ~B) also correct.
-    assign C=A & B;
+    assign S = A ^ B; //using bitwise XOR operator. S=(~A & B)|(A & ~B) also correct.
+    assign C = A & B;
   endmodule</code></pre>
 
       <p>Now, from the expression, you can easily deduce that the circuit of half adder requires 1 XOR gate (for sum term) and 1 AND gate (for carry term). With this knowledge in mind, let us do the gate level code.</p>
@@ -101,10 +101,10 @@
 
 <pre class="line-numbers"><code class="language-verilog">  module half_adder(
   input A, B,
-  output reg S, C //only registers can be assigned inside procedural block
+  output S, C 
   );
-    gate xor G1(S, A, B);
-    gate and G2(C, A, B);
+    xor G1(S, A, B);
+    and G2(C, A, B);
   endmodule</code></pre> 
       <br>
       <p>Now, time to do the behavioural implementation of half adder circuit.</p>
@@ -113,7 +113,7 @@
       <h3 id="behavioural" class="font-weight-bold" style="font-size:1.25rem;">Behavioural Modelling: -</h3>           
 <pre class="line-numbers"><code class="language-verilog">  module half_adder(
   input A, B,
-  output S, C
+  output reg S, C //only registers can be assigned inside procedural block
   );
     always@(*) //active if any of the inputs changes
       begin
@@ -135,7 +135,7 @@
     reg A, B;
     wire S, C;
     
-    half adder test_adder(A, B, S, C);
+    half_adder test(A, B, S, C);
 
     initial
       begin

@@ -12,9 +12,8 @@ urlpatterns = [
     path('gate-level-modelling/',views.gate_level_modelling, name="gate_level_modelling"),
     path('behavioral-2/',views.behavioral_2,name="behavioral2"),
     path('half-adder/',views.half_adder,name="half_adder"),
-<<<<<<< HEAD
+    path('full-adder/',views.full_adder,name="full_adder"),
     path('mux/',views.mux,name="mux"),
-=======
->>>>>>> ed1cff22d4cc0a4cff09c5474a4b011cf4ed70c6
+
 
 ]

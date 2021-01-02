@@ -44,9 +44,9 @@ def behavioral_2(request):
 
 def half_adder(request):
 	return render(request,'articles/half-adder.html')
-<<<<<<< HEAD
+
+def full_adder(request):
+	return render(request, 'articles/full-adder.html')
 
 def mux(request):
 	return render(request,'articles/mux.html')
-=======
->>>>>>> ed1cff22d4cc0a4cff09c5474a4b011cf4ed70c6
