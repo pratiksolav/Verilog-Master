@@ -1,0 +1,166 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Full Adder using Half Adders
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Full Adder using Half Adders</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Full Adder using Half Adders</h1>
+      <hr>
+      <p id="intro">Remember what we talked about instantiation? In this article, we are going to design a full adder by instantiating the <a href="/half-adder" target="_blank">Half Adder</a> circuit we did previously.</p>
+
+      <p>Before we jump into the code, let us develop some intuition. In Digital Design, we try to minimise the development of custom hardware, unless the target functionality has widespread application. So when we look at a circuit or expression, we must think of reusability. Do I need to write this from scratch? Can I combine any previous design(s) to get this? With this in mind, you may proceed further.</p>
+
+      <p>Let us do a comparative study of half adder and full adder.</p>
+
+      <br>
+
+      
+        <div class="col-md-12">
+          <img class="img-fluid" src="{% static "img/gates/rtl.jpg"%}" alt="">
+          <h5 class="text-center">Fig. Half Adder</h5>
+        </div>
+
+        <div class="col-md-12">
+          <img class="img-fluid" src="{% static "img/gates/full_adder_rtl.jpg"%}" alt="">
+          <h5 class="text-center">Fig. Full Adder</h5>
+        </div>
+      
+      <p id="halfvsfull">Notice anything similar?<br>
+        <ul>
+          <li>In the full adder sum, we have a <i>a XOR b</i> term which in turn is <i>XORed with ci</i>. So maybe we can use a half adder to get that <i>a XOR b</i>.</li>
+          <li>Secondly, we also have the half adder AND gate to our expense. Maybe we can use it to get a part of full adder carry output.</li>
+        </ul>
+      </p>
+
+      <p>
+        Now, take another half adder. So we have two XOR gates and two AND gates to our expense. Have a look at the full adder circuit again. We got two AND, we got two XOR. We are just missing an OR gate. So we add an OR gate to our two half adder circuits, and voila! We have our Full Adder! Amazing, isn’t it?
+  	  </p>  
+  	  
+      <p id="circuit">Take a look at the final circuit which is a combination of two half adder circuits and an OR gate.</p>
+      <div class="col-md-12">
+          <img class="img-fluid" src="{% static "img/gates/full-half.jpg"%}" alt="">
+          <h5 class="text-center">Fig. Full Adder using Half Adders</h5>
+      </div>
+
+      <p>
+        Now, let us write the code for this circuit.<br>
+        <b><u>Note: -</u></b> Our half adder module was named as <i>‘half_adder’</i><br>
+      </p>
+      
+      <hr>
+      <h3 id="code" class="font-weight-bold" style="font-size:1.25rem;">Verilog Code: -</h3>
+
+
+<pre class="line-numbers"><code class="language-verilog">  module full_half_adder(
+  input a, b, ci,
+  output s, c
+  );
+    wire w1, w2, w3;
+    half_adder ha1 (a, b, w1, w2); // w1 - XOR output, w2 - AND output
+    half_adder ha2 (w1, ci, s, w3); // s- XOR output(final sum), w3 - AND output
+    or G1(c, w3, w2);
+
+  endmodule</code></pre>
+      <br>
+      <p>
+        Once you are done with the design, write a testbench to verify its functionality. You may use the same testbench we wrote to test the custom full adder circuit, in the previous article. (Given below for reference)<br><br>
+        Just make sure that you are not testing the custom full adder design. You may keep separate module names to avoid this.
+        Check the simulation outputs and if you are using the same one, make sure the simulation waveforms match.<br>
+      </p>
+
+      <hr>
+      
+      <h3 id="test" class="font-weight-bold" style="font-size:1.25rem;">TestBench + Waveform: -</h3>
+
+<pre class="line-numbers"><code class="language-verilog">  module test_fulladder();
+    reg a, b, ci;
+    wire s, c;
+    
+    full_half_adder test(a, b, ci, s, c); //testing the new design module :)
+
+    initial
+      begin
+          a = 1'b0;
+          b = 1'b0;
+          ci = 1'b0;
+      
+      #20 a = 1'b0;
+          b = 1'b0;
+          ci = 1'b1;
+
+      #20 a = 1'b0;
+          b = 1'b1;
+          ci = 1'b0;
+
+      #20 a = 1'b0;
+          b = 1'b1;
+          ci = 1'b1;
+
+      #20 a = 1'b1;
+          b = 1'b0;
+          ci = 1'b0;
+
+      #20 a = 1'b1;
+          b = 1'b0;
+          ci = 1'b1;
+
+      #20 a = 1'b1;
+          b = 1'b1;
+          ci = 1'b0;
+
+      #20 a = 1'b1;
+          b = 1'b1;
+          ci = 1'b1;
+
+      end
+
+    initial
+      #200 $finish;
+  endmodule</code></pre> 
+
+      <br>
+      <p id="sim_waveform">Have a look at the simulation waveform generated in Vivado.</p>
+
+      <div class="col-md-12">
+        <img class="img-fluid" src="{% static "img/gates/full_adder_waveform.jpg"%}" alt="">
+        <h5 class="text-center">Fig. Full Adder Waveform</h5>
+      </div>
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#halfvsfull" class="list-group-item list-group-item-action bg-light">Comparison</a>
+        <a href="#circuit" class="list-group-item list-group-item-action bg-light">Circuit</a>
+        <a href="#code" class="list-group-item list-group-item-action bg-light">Verilog Code</a>
+        <a href="#test" class="list-group-item list-group-item-action bg-light">Simulation</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('fullhalf').classList.add('active')
+</script>
+{% endblock %}
+

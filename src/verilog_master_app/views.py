@@ -48,5 +48,8 @@ def half_adder(request):
 def full_adder(request):
 	return render(request, 'articles/full-adder.html')
 
+def full_half_adder(request):
+	return render(request, 'articles/full-half-adder.html')
+
 def mux(request):
 	return render(request,'articles/mux.html')

@@ -13,6 +13,7 @@ urlpatterns = [
     path('behavioral-2/',views.behavioral_2,name="behavioral2"),
     path('half-adder/',views.half_adder,name="half_adder"),
     path('full-adder/',views.full_adder,name="full_adder"),
+    path('full-half-adder/',views.full_half_adder,name="full_half_adder"),
     path('mux/',views.mux,name="mux"),
 
 
