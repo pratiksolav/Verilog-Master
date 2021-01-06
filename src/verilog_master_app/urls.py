@@ -14,6 +14,7 @@ urlpatterns = [
     path('half-adder/',views.half_adder,name="half_adder"),
     path('full-adder/',views.full_adder,name="full_adder"),
     path('full-half-adder/',views.full_half_adder,name="full_half_adder"),
+    path('half-subtractor/',views.half_subtractor,name="half_subtractor"),
     path('mux/',views.mux,name="mux"),
 
 

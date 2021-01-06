@@ -1,0 +1,9 @@
+/* The Gate Level Verilog Code for Half Subtractor */
+module half_sub(
+  input a, b,
+  output d, br 
+  );
+    
+  xor G1(d, a, b);
+  and G2(br, ~a, b);
+endmodule

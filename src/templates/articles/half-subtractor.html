@@ -1,0 +1,195 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Half Subtractor
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Half Subtractor</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Half Subtractor</h1>
+      <hr>
+      <p id="intro">This circuit is used to subtract two 1-bit numbers. Though in digital systems, separate subtractors are rarely used(<i>signed arithmetic</i> is used to get the subtraction done using adder circuits only), we still cover this for the sake of clarity.</p>
+
+      <p>First of all, let us write the truth table.</p>
+      <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th>a(1-bit)</th>
+                <th>b(1-bit)</th>
+                <th>Difference 'd'</th>
+                <th>Borrow 'br'</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>0</th>
+                <th>0</th>
+                <th>0</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>0</th>
+                <th>1</th>
+                <th>1</th>
+                <th>1</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>0</th>
+                <th>1</th>
+                <th>0</th>
+              </tr>
+              <tr>
+                <th>1</th>
+                <th>1</th>
+                <th>0</th>
+                <th>0</th>
+              </tr>
+
+            </tbody>
+      </table>
+
+      <p>
+      <br>
+      The expressions for difference and borrow are as follows: -<br>
+      d = a’.b + a.b’ = a XOR b<br>
+      br = a’.b<br>
+
+      As you can see, the only difference from half adders expression is the ‘br’ has a’  (a complement) instead of a.
+      </p>
+      <hr>
+      <div id="circuit" class="row">
+        <div class="col-md-6">
+          <h3 id="circuit" class="font-weight-bold" style="font-size:1.25rem;">Circuit Diagram</h3>
+          <img class="img-fluid" src="{% static "img/gates/half_sub_rtl.jpg"%}" alt="">
+          <h5 class="text-center">Fig. RTL Diagram generated in Vivado</h5>
+        </div>
+        <div class="col-md-6">
+          <h3 id="dataflow" class="font-weight-bold" style="font-size:1.25rem;">Dataflow Modelling</h3>
+<pre class="line-numbers"><code class="language-verilog">  module half_sub(
+  input a, b,
+  output d, br
+  );
+    assign d = a ^ b;
+    assign br = ~a & b;
+  endmodule</code></pre>     
+        </div>
+      </div>
+
+      <hr>
+      
+
+      <p>
+        Now, since you are already familiar with half adder codes, you may take an assignment.
+        <ol>
+          <li>Write the gate level and behavioural abstractions for the half subtractor circuit. They will be very similar to half adder :)</li>
+          <li>Once you are done, test all three abstractions and check the simulations. Ensure that simulation outputs match the truth table.</li>
+        </ol> 
+      </p>
+
+      <p>In case you are unable to follow with this, we have provided the codes and simulation waveform below for you to download.</p>
+
+      <p>
+        <b><u>Tip: -</u></b><br>
+        Now, since the input combination is the same as a half adder, and the number of outputs is also the same, you may as well use the testbench for half adder itself. Just replace the sum and carry variables with a difference and borrow respectively to avoid confusion.<br>
+        <a href="/half-adder#test" target="_blank">Link to Half Adder Testbench</a>
+      </p>
+      <hr>
+      <p>
+        <h3 id="circuit" class="font-weight-bold" style="font-size:1.25rem;">Pressure Cooker</h3>
+      </p>
+
+      <table class="table table-bordered text-center m-auto">
+            <thead class="thead-dark">
+              <tr>
+                <th>S.No.</th>
+                <th>Term</th>
+                <th>Clarity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>PC-1</th>
+                <th>Signed Arithmetic</th>
+                <th>NO</th>
+              </tr>
+            </tbody>
+      </table>
+      <hr>
+      <h3 id="download" class="font-weight-bold" style="font-size:1.25rem;">Download Codes</h3>
+      <div class="row">
+        <div class="col-md-3">
+          <p>Gate Level Design Code</p>
+        </div>
+        <div class="col-md-3">
+          <p>Behavioural Design Code</p>
+        </div>
+        <div class="col-md-3">
+          <p>Testbench Code</p>
+        </div>
+        <div class="col-md-3">
+          <p>Simulation Waveform</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <a href="{% static "download\half_sub_gate.txt"%}" download>
+            <button class="btn"><i class="fa fa-download"></i> Download</button>
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="{% static "download\half_sub_behav.txt"%}" download>
+            <button class="btn"><i class="fa fa-download"></i> Download</button>
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="{% static "download\half_sub_test.txt"%}" download>
+            <button class="btn"><i class="fa fa-download"></i> Download</button>
+          </a>
+        </div>
+        <div class="col-md-3">
+          <a href="{% static "download\half_sub_waveform.jpg"%}" download>
+            <button class="btn"><i class="fa fa-download"></i> Download</button>
+          </a>
+        </div>
+
+      </div>
+
+      
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#circuit" class="list-group-item list-group-item-action bg-light">Circuit Digram</a>
+        <a href="#dataflow" class="list-group-item list-group-item-action bg-light">Dataflow Code</a>
+        <a href="#download" class="list-group-item list-group-item-action bg-light">Reference Codes</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('halfsubtractor').classList.add('active')
+</script>
+{% endblock %}
+

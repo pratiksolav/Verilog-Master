@@ -1,0 +1,12 @@
+/* Behavioural Code for Half Subtractor */
+module half_sub(
+  input a, b,
+  output reg d, br 
+  );
+    always@(*) 
+      begin
+        d = a ^ b;
+        br = ~a & b; 
+	/* {br, d} = a - b; also works. */
+      end
+endmodule

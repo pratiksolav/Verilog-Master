@@ -1,0 +1,27 @@
+/* Verilog Code for Half Subtractor Testbench */
+module test_halfsub();
+    reg a, b;
+    wire d, br;
+    
+    half_sub test(a, b, d, br);
+
+    initial
+      begin
+          a = 1'b0;
+          b = 1'b0;
+      
+      #20 a = 1'b0;
+          b = 1'b1;
+
+      #20 a = 1'b1;
+          b = 1'b0;
+
+      #20 a = 1'b1;
+          b = 1'b1;
+
+      end
+
+    initial
+      #100 $finish;
+ 
+endmodule
