@@ -1,0 +1,880 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Verilog Basics-II
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Verilog Basics-II</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Verilog Basics - II</h1>
+      <hr>
+     <p id="Intro">A general logic circuit can consist of logic gates ,transmission gates  or switches. Verilog HDL supports these components as predefined primitives.
+
+      <hr>
+      <h3 id="PP" class="font-weight-bold" style="font-size:1.25rem;">Predefined Primitives</h3>
+      <br>
+      <h><u><b>Logic Gates</b></u></h><br>
+      <br>
+      <p id="LogicGates">These gates have one scalar output and multiple scalar inputs.</p><br>
+      <div>
+        <table class="table table-bordered text-center m-auto">
+          <thead class="thead-dark">
+            <tr>
+              <th colspan="1">Logic Gate</th>
+              <th>Predefined Primitive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Multiple Input AND gate</td>
+              <td>and</td>
+            </tr>
+            <tr>
+              <td>Multiple Input OR gate</td>
+              <td>or</td>
+            </tr>
+            <tr>
+              <td>Multiple Input NAND gate</td>
+              <td>nand</td>
+            </tr>
+            <tr>
+                <td>Multiple Input NOR gate</td>
+                <td>nor</td>
+              </tr>
+              <tr>
+                <td>Multiple Input XOR gate</td>
+                <td>xor</td>
+              </tr>
+              <tr>
+                <td>Multiple Input XNOR gate</td>
+                <td>xnor</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+         <div>  
+        <div class="text-center">
+            <img class="img-fluid" src="{% static "img/gates/logicgates.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 1-Logic Gates</h5>
+        </div>
+        <br>
+        <div>
+            These gates are instantiated to build logic circuits in Verilog.<br>
+            The syntax consists of primitive followed by round brackets containing the list of inputs and outputs separated by commas, terminating with a semicolon.The first in round bracket is considered as output while all remaining entities are termed as inputs.<br>
+            <br>
+            Syntax  ---    primitive instance_name(out, in1, in2, in3, …);<br>
+      <div>  
+       Here are some examples for logic gate instantiation in Verilog:<br>
+       <br> 
+       <div>
+<pre class="line-numbers"><code class="language-verilog"> wire OUT, A, B, C, D;
+    and G1(OUT, A, B);
+    or G2(OUT, A, B);
+    nand G3(OUT, A, B);
+    nor G4(OUT, A, B);
+    xor G5(OUT, A, B);
+    xnor G6(OUT, A, B);
+
+//We can also have multiple-input gates within single declaration
+// Here is a 4-input AND gate
+
+and G7(OUT, A, B, C, D); 
+
+// G1,G2,G3,..,etc are the gate instance name
+// We can even declare without it
+
+nor (OUT, A, B, C); // Legally Correct !</code></pre>
+ <br>     
+</div>
+      </div>
+
+      <h><u><b>Transmission Gates</b></u></h>
+      <br>
+      <p id="TransmissionGates">These gates have one scalar input and one or more scalar outputs.These gates can have an extra enable/control signal. </p>
+      <div>
+        <table class="table table-bordered text-center m-auto">
+          <thead class="thead-dark">
+            <tr>
+              <th colspan="1">Transmission Gate</th>
+              <th>Predefined Primitive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Multiple Output Inverter</td>
+              <td>not</td>
+            </tr>
+            <tr>
+              <td>Multiple Output Buffer</td>
+              <td>buf</td>
+            </tr>
+            <tr>
+              <td>Tri-state Inverter (active low)</td>
+              <td>notif0</td>
+            </tr>
+            <tr>
+                <td>Tri-state Inverter (active high)</td>
+                <td>notif1</td>
+              </tr>
+              <tr>
+                <td>Tri-state Buffer (active low)</td>
+                <td>bufif0</td>
+              </tr>
+              <tr>
+                <td>Tri-state Buffer (active high)</td>
+                <td>bufif1</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+         <div>  
+        <div class="text-center">
+          <br>
+            <img class="img-fluid" src="{% static "img/gates/transmissiongate.jpg"%}" alt="">
+            <h5 class="text-center">Fig. 2-Transmission Gates</h5>
+        </div>
+        <br>
+        <div>
+          
+            The syntax consists of primitive followed by round brackets containing the list of inputs and outputs separated by commas, terminating with a semicolon.The last in round bracket is considered as input while all remaining entities are termed as outputs.<br><br>
+            Syntax ----  primitive instance_name ( out1, out2 ,…,input);<br>
+            <br>
+            If the gate is tri-state , the last one in round brackets is enable/control , preceded by the input entity while remaining ones are outputs.<br>
+            Syntax ---- primitive instance_name (out1, out2,….,input , control);<br>
+
+      <div> 
+        <br> 
+        Here are some examples for transmission gate instantiation in Verilog:<br>
+        <div>
+<pre class="line-numbers"><code class="language-verilog">wire OUT, OUT1, OUT2, IN, CONTROL ; 
+  
+    // Inverter and Buffer
+    
+    not G1(OUT, IN); 
+    buf G2(OUT, IN);
+    
+    //We can also have multiple-output gates within single declaration
+    not G3(OUT1, OUT2, IN);
+    buf G4(OUT1, OUT2, OUT3, IN);  
+    // G1,G2,G3,..,etc are the gate instance name
+    // We can even declare without it
+    buf (OUT, IN); // Legally Correct !
+    
+    // Tristate Buffer
+    
+    bufif0 G5(OUT, IN, CONTROL); 
+    bufif1 G6(OUT, IN, CONTROL);
+    // Tristate Inverter
+    
+    notif0 G7(OUT, IN, CONTROL); 
+    notif1 G8(OUT, IN, CONTROL);</code></pre>
+        </div>
+        <br>
+      </div>
+
+
+
+    </div>
+  </div>
+  <h><u><b>Switches</b></u></h>
+  <p id="Switches">A switch is the whole basis of the logic gates and then further logic circuits.The predefined primitives here, will model the basic MOSFET switches.</p>
+
+     <div>  
+    <div class="text-center">
+        <img class="img-fluid" src="{% static "img/gates/awitch.jpg"%}" alt="">
+        <h5 class="text-center">Fig. 3-Switches</h5>
+    </div>
+    <br>
+  <div>  
+    Example for Instantiation for MOSFET switches :<br>
+    <div>
+<pre class="line-numbers"><code class="language-verilog">wire out, data, control, ncontrol, pcontrol ; 
+  
+    // NMOS and PMOS
+    
+    nmos n1(out, data, control); 
+    pmos p1(out, data, control);
+    
+    // Without declaration of the instance name
+    nmos (out, data, control); 
+    pmos (out, data, control);
+    
+    // CMOS
+    
+    cmos c1(out, data, ncontrol, pcontrol); 
+    
+    // CMOS can also be declared using NMOS and PMOS instantiation 
+    nmos (out, data, ncontrol); 
+    pmos (out, data, pcontrol);</code></pre>
+    </div>
+  </div>
+
+
+
+
+
+  <hr>
+  <h3 id="Operators" class="font-weight-bold" style="font-size:1.25rem;">Operators</h3>
+<p>Verilog has many different operator types. There are various operator types namely Arithmetic, Relational, Logical, Equality, Reduction, Bitwise, Conditional, Shift and Concatenation.</p>
+<p> The operators can be classified as Unary, Binary or Ternary based upon no. of operands required for operation.</p>
+  <p>Unary – Single Operand ; Binary – Two Operands ; Ternary – Three Operands </p>  
+<h><u><b>Arithmetic Operators</b></u></h>
+
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th>
+          <th>Description</th>
+          <th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>+</td>
+          <td>Add</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>-</td>
+          <td>Subtract</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>*</td>
+          <td>Multiply</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>/</td>
+          <td>Divide</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>%</td>
+          <td>Modulus</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>**</td>
+          <td>Exponential</td>
+          <td>Binary</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog"> in1 = 20; in2 = 4; 
+
+in1 + in2; //Addition. Value = 24
+in1 - in2; //Subtraction. Value = 16
+in1 * in2; //Multiplication. Value = 80
+in1 / in2; //Division. Value = 5
+in1 % in2; //Modulus. Value = 0
+in1 ** in2; //Exponential. Value = 160000</code></pre>
+    </div>
+    <br>
+  </div>
+
+ 
+  <h><u><b>Relational Operators</b></u></h>
+  <br>
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th>
+          <th>Description</th>
+          <th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>></td>
+          <td>Greater Than</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td><</td>
+          <td>Less Than</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>>=</td>
+          <td>Greater than or Equal </td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td><=</td>
+          <td>Less than or Equal</td>
+          <td>Binary</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog"> in1 = 20 ; in2 = 4; in3 = 4;
+  
+  in1 > in2; //Evaluates to Logical ‘1’
+  in1 < in2; // Evaluates to Logical ‘0’
+  in2 >= in3; // Evaluates to Logical ‘1’
+  in1 <= in3; // Evaluates to Logical ‘0’</code></pre>
+    </div>
+  </div>
+  <br>
+  <h><u><b>Logical Operators</b></u></h>
+  <br>
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th>
+          <th>Description</th>
+          <th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>!</td>
+          <td>Logical Negation</td>
+          <td>Unary</td>
+        </tr>
+        <tr>
+          <td>&&</td>
+          <td>Logical AND</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>||</td>
+          <td>Logical OR </td>
+          <td>Binary</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog"> in1 = 5 ; in2 = 0;
+
+
+  in1 && in2; //Evaluates to ‘0’ => (Logical-1 && Logical-0)
+  in1 || in2; // Evaluates to ‘1’ => (Logical-1 || Logical-0)
+  !in1; // Evaluates to ‘0’ => NOT(Logical-1)
+  !in2; // Evaluates to ‘1’ => NOT(Logical-0)</code></pre>
+    </div>
+  </div>
+  <br>
+
+  <h><u><b>Equality Operators</b></u></h>
+  <br>
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th>
+          <th>Description</th>
+          <th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>==</td>
+          <td>Equality</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>!=</td>
+          <td>Inequality</td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>===</td>
+          <td>Greater than or Equal </td>
+          <td>Binary</td>
+        </tr>
+        <tr>
+          <td>!==</td>
+          <td>Less than or Equal</td>
+          <td>Binary</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog"> in1 = 4’b0010 ; in2 = 4’b1001 ; in3 = 4’b0010;
+  in4 = 4’b00x1 ; in5 = 4’b01xx ; in6 = 4’b00x1;
+  
+  
+  in1 == in3; //Evaluates to Logical ‘1’
+  in1 != in2; // Evaluates to Logical ‘1’
+  in4 == in6; //Evaluates to ‘x’
+  in4 === in6; // Evaluates to Logical ‘1’ , matches all bits, including x
+  in4 !== in5; // Evaluates to Logical ‘1’</code></pre>
+    </div>
+    <br>
+  </div>
+
+  <h><u><b>Reduction Operators</b></u></h>
+  <br>
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th>
+          <th>Description</th>
+          <th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&</td>
+          <td>Reduction AND</td>
+          <td>Unary</td>
+        </tr>
+        <tr>
+          <td>~&</td>
+          <td>Reduction NAND</td>
+          <td>Unary</td>
+        </tr>
+        <tr>
+          <td>|</td>
+          <td>Reduction OR</td>
+          <td>Unary</td>
+        </tr>
+        <tr>
+          <td>~|</td>
+          <td>Reduction NOR</td>
+          <td>Unary</td>
+        </tr>
+        <tr>
+          <td>^</td>
+          <td>Reduction XOR</td>
+          <td>Unary</td>
+        </tr>
+        <tr>
+          <td>~^</td>
+          <td>Reduction XNOR</td>
+          <td>Unary</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog"> in = 4’b0101;
+  
+  
+  &in ; //Evaluates as 0 & 1 & 0 & 1 = 1’b0
+  ~&in ; // Evaluates as ~(0 & 1 & 0 & 1) = 1’b1
+  |in; //Evaluates as 0 | 1 | 0 | 1 = 1’b1
+  ~|in; // Evaluates as ~(0 | 1 | 0 | 1) = 1’b0
+  ^in; //Evaluates as 0 ^ 1 ^ 0 ^ 1 = 1’b0
+  ~^in; // Evaluates as ~(0 ^ 1 ^ 0 ^ 1) = 1’b1</code></pre>
+    </div>
+    <br>
+  <h><u><b>Bitwise Operators</b></u></h>
+  <br>
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th><th>Description</th><th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>~</td><td>Bitwise NOT</td><td>Unary</td>
+        </tr>
+        <tr><td>&</td><td> Bitwise AND</td><td>Binary</td></tr>
+        <tr><td>|</td><td>Bitwise OR</td><td>Binary</td></tr>
+        <tr><td>^</td><td>Bitwise XOR</td><td>Binary</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog">in1 = 4’b0101; in2 = 4’b1011;
+  
+  
+  ~in1; //Evaluates to 4’b1010 => { (!0) , (!1) , (!0) , (!1)} 
+  in1 & in2; // Evaluates to 4’b0001 => {(0 && 1), (1 && 0), (0 && 1), (1 && 1)}
+  in1 | in2; // Evaluates to 4’b1111 => {(0 || 1), (1 || 0), (0 || 1), (1 || 1)}
+  in1 ^ in2; // Evaluates to 4’b1110 => {(0 ^ 1), (1 ^ 0), (0 ^ 1), (1 ^ 1)}</code></pre>
+    </div>
+    <br>
+  <h><u><b>Shift Operators</b></u></h>
+  <br>
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th><th>Description</th><th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>>></td><td>Right Shift</td><td>Binary</td></tr>
+        <tr><td><<</td><td>Left Shift</td><td>Binary</td></tr>
+        <tr><td>>>></td><td>Arithmetic Right Shift</td><td>Binary</td></tr>
+        <tr><td><<<</td><td>Arithmetic Left Shift</td><td>Binary</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog">
+  in1 = 4’b0101 ; 
+  b = -10 ; // binary(10) = 01010 ; binary(-10) = ~binary(10)+1 [2’s Complement]
+          // binary(-10) = 10110
+  
+   out = in1>>1; // out = 4’b0010 
+  out = in1<<2; // out = 4’b0100 
+  out = in1<<1; // out = 4’b1010 
+  out = (b>>>2); //(out = -3) -> (10110)>>>2 = 11101 -> out = ~(11101)+ 1 = 00011(- 3)</code></pre>
+    </div>
+    <br>
+  <h><u><b>Brace Operators</b></u></h>
+  <br>
+  <div>
+    <br>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>
+          <th>Operator</th><th>Description</th><th>Type(based on number of operands)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>{ }</td><td>Concatenation</td><td>No Limit</td></tr>
+        <tr><td>{ { } }</td><td>Replication</td><td>No Limit</td></tr>
+        </tbody>
+    </table>
+  </div>
+  <br>
+<div>
+<pre class="line-numbers"><code class="language-verilog">in1 = 1’b1 ; in2 = 2’b00 ; in3 = 1’b1;
+
+  y = {in1, in2, in3} ;  // y=4’b1001
+  
+  y = {4{in1}, 2{in2}} ; // y=8’b11110000</code></pre>
+    </div>
+    <h><u><b>Conditional Operator</b></u></h>
+    <br>
+  <p>Symbol ->  ? :       Syntax ->  y = a ? b : c ; (Ternary Operator)</p>  
+  <p>The above statement means that if a==1 , then y = b ; else y = c;</p>
+  <hr>
+  <h3 id="Lexicals" class="font-weight-bold" style="font-size:1.25rem;">Lexicals</h3>
+  <p>The basic lexical conventions in Verilog HDL are similar to C programming language. There is a stream of tokens which can be  numbers, strings, identifiers, comments, delimiters and keywords. </p>
+ <p>All keywords are in lowercase, that becomes essential as Verilog HDL is a case-sensitive language.</p><br> 
+  <h><u><b>Whitespaces</b></u></h>
+  <div>
+    <br>
+    <p>This comprises of  Tab (\t) , Newline (\n) , Blank Space (\b).
+      It has some special meaning when used with strings.
+      However , those are ignored elsewhere.</p>
+    <p>One of the major use of whitespace is to improve visibility of output obtained after execution of any code.</p><br>
+  </div>
+  <br>
+  <h><u><b>Comments</b></u></h>
+  <div>
+    <br>
+    <p>Comments help in readability and documentation of code.</p>
+    <p>One Line comment starts with ‘//’.
+      The compiler skips any part written after this notation for that line.
+     Multiple Line Comment starts with ‘ /* ’ and ends with ‘ */ ’.
+     </p>
+    <p>The compiler skips any part written between these two notations.</p>
+    <p>One-Line Comments can be nested into Multi Line Comments while nesting of only Multi Line Comments is not allowed.</p><br>
+  </div>
+  <br>
+  <div>
+    <pre class="line-numbers"><code class="language-verilog">
+a = b ^ c; // One Line Comment
+
+/*  Multi 
+    Line
+    Comment */
+    
+/* / Legal Comment / */
+    
+/* 
+/* Illegal Comment */
+*/    
+    </code></pre>
+  </div>
+  <br>
+
+  <h><u><b>Numbers</b></u></h>
+  <div>
+    <br>
+    <p> Syntax -- (size)’(base)(number)  </p>
+    <p>Here size is taken as no. of bits associated in binary form of number no matter whatever the base can be.</p>
+    <p>For e.g. Single Hexadecimal Number occupies 4 bits,
+      Single Octal Number occupies 3 bits,etc.</p>
+    <p>Legal Base formats include Binary(‘b OR ‘B) , Octal(‘o OR ‘O ) , Decimal (‘d OR ‘D) and Hexadecimal (‘h OR ’H)</p>
+    <p>Numbers should be a subset of following (complying with availability of number in that particular base format) :</p>
+    <p>0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F</p><br>
+     </div>
+     <br>
+   <div>
+    <pre class="line-numbers"><code class="language-verilog">
+4’b0010 // 4-bit Binary Number
+16’hab5f // 16-bit Hexadecimal Number
+10’d987 // 10-bit Decimal Number      
+    </code></pre>
+  </div>
+  <br>
+  <div> 
+    <br>
+        <p>If a number doesn’t have a size mentioned , then bit-size is simulator and machine-specific (generally  32-bit).</p>
+        <p>If a number doesn’t have a base mentioned , then by default , the number is considered to be written in Decimal format.</p><br>
+         </div>
+         <br>
+       <div>
+        <pre class="line-numbers"><code class="language-verilog">   
+’b0010 // 32-bit Binary Number
+’hab5f // 32-bit Hexadecimal Number
+   987 // 32-bit Decimal Number by Default  
+        </code></pre>
+      </div>
+    <br>
+    <div> 
+      <br>
+          <p>Also there are symbols for denoting Unknown and High Impedance Levels.</p>
+          <p>These are important while implementing real optimized circuits.</p>
+          <p>Unknown value is represented by  x</p>
+          <p>High Impedance value is represented by  z</p><br>
+           </div>
+           <br>
+         <div>
+          <pre class="line-numbers"><code class="language-verilog">     
+4’b00xx // 4-bit Binary Number. Two LSBs Unknown
+16’habxx // 16-bit Hexadecimal Number . Eight LSBs unknown
+10’dz // 10-bit Decimal Number. (All High Impedance)            
+          </code></pre>
+        </div>
+      <br>
+      <div> 
+        <br>
+            <p>Negative Numbers can be specified with a negative sign before the complete representation of number.</p>
+            <p>Alternatively , a signal specifier can be added.</p>
+            <p>Any other ways of representation are not legal and may give syntax error</p><br>
+             </div>
+             <br>
+           <div>
+            <pre class="line-numbers"><code class="language-verilog">     
+-3’d4 // Stored as 2’s complement
+-3’sd4 // For signed mathematical calculation
+ 3’d-4 // Illegal 
+            </code></pre>
+          </div>
+        <br>
+        <div> 
+          <br>
+              <p>We can add underscores anywhere in number except the first character.</p>
+              <p>This doesn’t have ay special meaning, but it just increases readability.</p>
+              <p> We can use ‘?’ symbol as an alternative to ‘z’ (High Impedance) for improving readability.</p><br>
+               </div>
+               <br>
+             <div>
+              <pre class="line-numbers"><code class="language-verilog"> 
+8’b00111001 // 8-bit Binary Number
+8’b0011_1001 // Same as above 
+12’h38? // Equivalent to 12’h38z   
+              </code></pre>
+            </div>
+          <br>
+
+          <h><u><b>Strings</b></u></h>
+          <div> 
+            <br>
+                <p>A string is the set of characters enclosed in double quotes.</p>
+                <p>It has to be in single line.</p>
+                <p>It is considered as a sequence of one-byte ASCII characters</p><br>
+                 </div>
+                 <br>
+               <div>
+                <pre class="line-numbers"><code class="language-verilog">     
+“Keep Learning with Verilog Master !” // 8-bit Binary Number
+“a = b + c doesn’t have any special meaning here” // Same as above                   
+                </code></pre>
+              </div>
+            <br> 
+            <h><u><b>Keywords</b></u></h>
+            <div>
+              <br>
+            <p>Words which have a special meaning in Verilog are called keywords. </p>
+            <p>They are special identifiers reserved for language constructs.</p>
+            <p>All keywords are in Lowercase.</p><br>
+            <br>
+            </div>
+            <div class="text-center">
+              <img class="img-fluid" src="{% static "img/gates/keyword.jpg"%}" alt="">
+              <h5 class="text-center">Fig. 4- Keyword Examples</h5>
+          </div>
+
+          <h><u><b>Identifiers</b></u></h>
+          <div> 
+            <br>
+                <p>Identifiers are names given to objects so that they can be referenced in the design.</p>
+                <p>They may consists of alphanumeric characters with underscore(_) or dollar sign ($) and are case sensitive.</p>
+                <p>They can start with any of above characters without dollar sign ($).
+                  It is reserved for system tasks.
+                  </p>
+                <p>If we declare any identifier starting with a “\” , all characters will be processed literally until any whitespace is found (space, tab or newline).
+                  These are called Escaped Identifiers.
+                  </p>
+                <p>Even keywords won’t be treated  as with any special meaning.  </p><br>
+                 </div>
+                 <br>
+               <div>
+                <pre class="line-numbers"><code class="language-verilog">     
+ reg  stored_val; // reg is keyword, stored_val is identifier
+ wire  temp; // wire is keyword, temp is identifier
+ \a-b+c*d // Escaped Identifier                  
+                </code></pre>
+              </div>
+            <br>
+            <h3 id="Sys" class="font-weight-bold" style="font-size:1.25rem;">System Tasks and Compiler Directives</h3>
+            <h><u><b>System Tasks</b></u></h>
+            <div>
+              <br>
+            <p>There are certain tasks which can generate input or output during simulation. They are termed as System Tasks provided by Verilog for certain routine tasks.</p><br>
+            <p>All of them appear in format $(keyword).</p>
+            <p>Operations such as displaying on screen, monitoring of nets, stopping or finishing system tasks can be done.</p>
+            <br>
+            </div>
+            <div class="text-center">
+              <img class="img-fluid" src="{% static "img/gates/sysdic.jpg"%}" alt="">
+              <h5 class="text-center">Fig. 4- Keyword Examples</h5>
+          </div>
+          <div>
+            <br>
+            <p>Syntax –</p>
+            <p>$display(“string_with_format”,arguement1,arguement2,..);</p>
+            <p>$displayb(All same but default format to binary..);</p>
+            <p>It is similar for all other system directives. Only if there’s any specific format specified like “b”, “o”, “h”, “d” then the arguements will be always taken in the specified format.</p><br>
+            <p>What are formats??</p><br>
+            <p>They are special characters to print certain variable obtained as either input or output during simulation.</p>
+           <p>Generally , they have a “%” sign followed by initials  corresponding certain property. That denotes the way we want our variable to be displayed.</p><br>
+
+          </div>
+          <div>
+            <br>
+            <table class="table table-bordered text-center m-auto">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Format</th><th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>%d or %D</td><td>Display variable in Decimal</td></tr>
+                <tr><td>%b or %B</td><td>Display variable in Binary</td></tr>
+                <tr><td>%o or %O</td><td>Display variable in Octal</td></tr>
+                <tr><td>%h or %H</td><td>Display variable in Hexadecimal</td></tr>
+                <tr><td>%t or %T</td><td>Display in current time format </td></tr>
+                <tr><td>%m or %M</td><td>Display hierarchical name (No arguments)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div> 
+            <br>
+                <p>We have to always call the function whenever we need to put certain value on display.</p>
+                <p>$display is used to display  variable values and strings on newline.</p>
+                <p>$monitor is used to monitor the value of variable </p>
+                <p>The function gets variable on display every time there is any change in variable value.There should be only one $monitor statement in the code . If there are multiple of them , the last one is considered. </p>
+                <p>$monitoron  and $monitoroff can be used to control the monitoring  of variables. The literal meaning represents what happens when any of them is used.</p>
+                <p>$stop is used to suspend the simulation and then put the simulation in interactive mode where the user can be involved in debugging activities. Here, the simulation process will be kept at stay but not stopped.</p>
+                <p>$finish is used to completely stop the simulation and handover the control to the user and relive the compiler. </p><br>
+              </div>
+                 <br>
+                 <div>
+                  <pre class="line-numbers"><code class="language-verilog">
+$display(“Verilog Master !!”); // Prints Verilog Master in Console
+$display($time); // Displays Current Simulation Time in Console
+// value = 4’d12 ; store = 5’d23 ;
+$display(“Store = %b , Value = %d ”,store, value);
+// Prints Store = 10111 , Value = 12 in Console
+                
+$display(“Store = %d , Value = %b ”,store, value);
+// Prints Store = 23 , Value = 1100 in Console    
+                  </code></pre>
+                </div>
+              <br>
+              <h><u><b>Compiler Directives</b></u></h>
+              <div> 
+                <br>
+                    <p>All compiler directives are defined by using the   `(keyword)  construct</p>
+                    <p>There are a few important compiler directives :</p>
+                    <p>`define is used to substitute certain variables/keywords/system directives on  a macro associated.</p>
+                    <p>Whenever we will encounter the macro , we have to do the function that is associated with its substitution. It is similar to #define in C programming language.</p><br>
+                    <p>`include allows us to include all the content of Verilog source file associated in another Verilog File.</p>
+                   <p>This  works as similar to #include in C programming language.</p>
+                   <br>
+                   <p>`timescale is generally associated with the scaling in the simulation plot.</p>
+                   <p>What should be the smallest scale division and the accuracy up to which  no errors are present. </p>
+                   <br>
+                   <p>`ifdef is also used for Conditional Compilation for Optimization.</p><br>
+                  </div>
+                     <br>
+                   <div>
+                    <pre class="line-numbers"><code class="language-verilog">   
+`define SIZE 27 ; // Used as `SIZE in code with value of 27
+
+`define SN $stop ; // Word `SN will stop simulation
+
+`include rfsystem.v ; // Include rfsystem.v file in the design file
+/*….
+  ….
+  (Verilog Code for Main Design )
+  ….
+  ….*/
+                    </code></pre>
+                  </div>
+                <br>
+  <br>
+</div>  
+<br>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#PP" class="list-group-item list-group-item-action bg-light">Predefined Primitives</a>
+        <a href="#Operators" class="list-group-item list-group-item-action bg-light">Operators</a>
+        <a href="#Lexicals" class="list-group-item list-group-item-action bg-light">Lexicals</a>
+        <a href="#Sys" class="list-group-item list-group-item-action bg-light">System Tasks and Compiler Directives</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('vbasics2').classList.add('active')
+</script>
+{% endblock %}
+

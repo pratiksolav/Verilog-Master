@@ -1,0 +1,252 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Code Converter - Binary to BCD
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Code Converter - Binary to BCD</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 id="Intro" class="mt-4" style="font-family:Raleway;">Code Converter - Binary to BCD</h1>
+      <hr>
+      <p>As we naturally live in a decimal (base-10) world we need some way of converting these decimal numbers into a binary (base-2) environment that computers and digital electronic devices understand, and binary coded decimal (BCD ) code allows us to do that.</p>
+      <p>Binary-coded decimal (BCD) is a class of binary encodings of decimal numbers where each digit is represented by a fixed number of bits, usually four.</p>
+      <p>However, the disadvantage is that in BCD code , the states between 1010 (decimal 10), and 1111 (decimal 15) are left unused.</p>
+      <p>Nevertheless, binary coded decimal has many important applications especially in systems like seven-segment displays ,etc.</p>
+      <p>So , while representing a number like Decimal - (23)</p>
+      <p>In Binary, we would write it as => (10111)</p>
+      <p>In BCD , we would write it as [23 = 2 + 3]  => (0010 0011) or (100011) by ignoring zeroes at MSB</p>
+      <p>Hence , Code Converters can be useful in finding the BCD Code Equivalent for the given Binary Number.</p>
+      <div class="text-center">
+        <img class="img-fluid" src="{% static "img/gates/bin_to_bcd.png"%}" alt="">
+        <h5 class="text-center">Fig. Block Diagram of Binary to BCD Code Converter</h5>
+    </div>
+    <hr>
+    <br>
+    <h3 id="TT" class="font-weight-bold" style="font-size:1.25rem;">Truth Table:</h3>
+    <table class="table table-bordered text-center m-auto">
+        <thead class="thead-dark">
+          <tr>
+            <th colspan="4" class="border-right">Binary Code Input</th>
+            <th colspan="5">BCD Code Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>B<sub>3</sub></th><th>B<sub>2</sub></th><th>B<sub>1</sub></th><th>B<sub>0</sub></th><th>D<sub>4</sub></th><th>D<sub>3</sub></th><th>D<sub>2</sub></th><th>D<sub>1</sub></th><th>D<sub>0</sub></th></tr>
+          <tr>
+              <th>0</th><th>0</th><th>0</th><th>0</th>
+              <th>0</th><th>0</th><th>0</th><th>0</th><th>0</th>
+        </tr>
+        <tr>
+            <th>0</th><th>0</th><th>0</th><th>1</th>
+            <th>0</th><th>0</th><th>0</th><th>0</th><th>1</th>
+      </tr>
+      <tr>
+        <th>0</th><th>0</th><th>1</th><th>0</th>
+        <th>0</th><th>0</th><th>0</th><th>1</th><th>0</th>
+     </tr>
+     <tr>
+        <th>0</th><th>0</th><th>1</th><th>1</th>
+        <th>0</th><th>0</th><th>0</th><th>1</th><th>1</th>
+     </tr>
+     <tr>
+                  <th>0</th><th>1</th><th>0</th><th>0</th>
+        <th>0</th><th>0</th><th>1</th><th>0</th><th>0</th>
+     </tr>
+     <tr>
+        <th>0</th><th>1</th><th>0</th><th>1</th>
+<th>0</th><th>0</th><th>1</th><th>0</th><th>1</th>
+</tr>
+<tr>
+    <th>0</th><th>1</th><th>1</th><th>0</th>
+<th>0</th><th>0</th><th>1</th><th>1</th><th>0</th>
+</tr>
+<tr>
+    <th>0</th><th>1</th><th>1</th><th>1</th>
+<th>0</th><th>0</th><th>1</th><th>1</th><th>1</th>
+</tr>
+        <tr>
+                  <th>1</th><th>0</th><th>0</th><th>0</th>
+        <th>0</th><th>1</th><th>0</th><th>0</th><th>0</th>
+        </tr>
+        <tr>
+            <th>1</th><th>0</th><th>0</th><th>1</th>
+  <th>0</th><th>1</th><th>0</th><th>0</th><th>1</th>
+  </tr>
+  <tr>
+    <th>1</th><th>0</th><th>1</th><th>0</th>
+<th>1</th><th>0</th><th>0</th><th>0</th><th>0</th>
+</tr>
+<tr>
+    <th>1</th><th>0</th><th>1</th><th>1</th>
+<th>1</th><th>0</th><th>0</th><th>0</th><th>1</th>
+</tr>
+<tr>
+    <th>1</th><th>1</th><th>0</th><th>0</th>
+<th>1</th><th>0</th><th>0</th><th>1</th><th>0</th>
+</tr>
+<tr>
+    <th>1</th><th>1</th><th>0</th><th>1</th>
+<th>1</th><th>0</th><th>0</th><th>1</th><th>1</th>
+</tr>
+<tr>
+    <th>1</th><th>1</th><th>1</th><th>0</th>
+<th>1</th><th>0</th><th>1</th><th>0</th><th>0</th>
+</tr>
+<th>1</th><th>1</th><th>1</th><th>1</th>
+<th>1</th><th>0</th><th>1</th><th>0</th><th>1</th>
+</tr>
+        </tbody>
+  </table>
+  <br>
+  <p>You can use Karnaugh Maps to solve for BCD Code Outputs - D<sub>4</sub> , D<sub>3</sub> , D<sub>2</sub>, D<sub>1</sub>, D<sub>0</sub>.</p>
+    <p>Give it a try.</p>
+  <p>We will obtain Boolean Expression as :</p>
+    <p>D<sub>4</sub> = B<sub>3</sub>.B<sub>2</sub> + B<sub>3</sub>.B<sub>1</sub> ;</p>
+    <p>D<sub>3</sub> = B<sub>3</sub>.(B<sub>2</sub>)'.(B<sub>1</sub>)' ;</p>
+    <p>D<sub>2</sub> = B<sub>2</sub>.B<sub>1</sub> + B<sub>2</sub>.(B<sub>3</sub>)' ;</p>
+    <p>D<sub>1</sub> = B<sub>3</sub>.B<sub>2</sub>.(B<sub>1</sub>)'  + B<sub>1</sub>.(B<sub>3</sub>)'</p>
+    <p>D<sub>0</sub> = B<sub>0</sub></p>
+<hr>
+<h3 id="Code" class="font-weight-bold" style="font-size:1.25rem;">Verilog Codes:</h3><br>
+<p><b>Gate Level:</b></p>
+
+<div>
+<pre class="line-numbers"><code class="language-verilog">module binary_to_bcd_gate(bin , bcd);
+
+    input [3:0]bin;
+    output [4:0]bcd;
+    wire [3:0]bin_not;
+    wire w1 , w2 , w3 , w4 , w5 , w6;
+    
+    not N1(bin_not[1] , bin[1]);
+    not N2(bin_not[2] , bin[2]);
+    not N3(bin_not[3] , bin[3]);
+    
+    and A1(w1 , bin[3] , bin[2]);
+    and A2(w2 , bin[3] , bin[1]);
+    and A3(w3 , bin_not[3] , bin[2]);
+    and A4(w4 , bin[2] , bin[1]);
+    and A5(w5 , w1 , bin_not[1]);
+    and A6(w6 , bin_not[3] , bin[1] );
+    
+    or O1(bcd[4] , w1 , w2);
+    and A7(bcd[3] , bin[3] , bin_not[2] , bin_not[1]);
+    or O2(bcd[2] , w3 , w4);
+    or O3(bcd[1] , w5 , w6);
+    buf B1(bcd[0] , bin[0]);
+    
+endmodule</code></pre>
+</div>
+<br>
+<p><b>Dataflow Level:</b></p>
+<div>
+    <pre class="line-numbers"><code class="language-verilog">module binary_to_bcd_dataflow(bin , bcd);
+    input [3:0]bin;
+    output [4:0]bcd;
+        
+    assign bcd[4] = ( bin[3]&bin[2]) |(bin[3]&bin[1]) ;
+    assign bcd[3] = bin[3]&(~bin[2])&(~bin[1]) ;
+    assign bcd[2] = ((~bin[3])&bin[2]) | (bin[2]&bin[1]) ;
+    assign bcd[1] =  (bin[3]&bin[2]&(~bin[1])) | ((~bin[3])&bin[1]) ;
+    assign bcd[0] = bin[0] ;
+         
+endmodule
+        
+    </code></pre>
+    </div>
+    <br>
+    <p><b>Behavioural Level:</b></p>
+    <div>
+        <pre class="line-numbers"><code class="language-verilog">module binary_to_bcd_behavioural( bin , bcd);
+        input [3:0]bin;
+        output reg [4:0]bcd;
+            
+        always@(bin)
+        begin 
+            case(bin)
+                4'b0000 : bcd = 5'b0_0000 ;
+                4'b0001 : bcd = 5'b0_0001 ;
+                4'b0010 : bcd = 5'b0_0010 ;
+                4'b0011 : bcd = 5'b0_0011 ;
+                4'b0100 : bcd = 5'b0_0100 ;
+                4'b0101 : bcd = 5'b0_0101 ;
+                4'b0110 : bcd = 5'b0_0110 ;
+                4'b0111 : bcd = 5'b0_0111 ;
+                4'b1000 : bcd = 5'b0_1000 ;
+                4'b1001 : bcd = 5'b0_1001 ;
+                4'b1010 : bcd = 5'b1_0000 ;
+                4'b1011 : bcd = 5'b1_0001 ;
+                4'b1100 : bcd = 5'b1_0010 ;
+                4'b1101 : bcd = 5'b1_0011 ;
+                4'b1110 : bcd = 5'b1_0100 ;
+                4'b1111 : bcd = 5'b1_0101 ;
+            endcase
+        end
+              
+endmodule</code></pre>
+        </div>
+        <br>
+        <p><b>Testbench Code:</b></p>
+        <div>
+            <pre class="line-numbers"><code class="language-verilog">module binary_to_bcd_tb;
+            reg [3:0]bin;
+            wire [4:0]bcd;
+            integer i;
+            binary_to_bcd_behavioural DUT(bin , bcd);  // The instantiation depends on the design file
+            //So it can be either binary_to_bcd_dataflow or binary_to_bcd_gate
+            initial
+                begin
+                  for(i=0 ; i<16 ;i= i+1 )
+                   begin
+                    bin <= i ; #10;
+                   end
+                  $finish;
+                end
+                
+endmodule </code></pre>
+            </div>
+            <br>
+            <hr>
+            <h3 id="Sim" class="font-weight-bold" style="font-size:1.25rem;">Simulation Result:</h3>
+            <div class="text-center">
+                <img class="img-fluid" src="{% static "img/gates/bin_to_bcds.jpg"%}" alt="">
+            </div>
+   
+    </div>
+  </div>
+
+
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#Intro" class="list-group-item list-group-item-action bg-light">Intro</a>
+        <a href="#TT" class="list-group-item list-group-item-action bg-light">Truth Table</a>
+        <a href="#Code" class="list-group-item list-group-item-action bg-light">Verilog Codes</a>
+        <a href="#Sim" class="list-group-item list-group-item-action bg-light">Simulation Result</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('bin_to_bcd').classList.add('active')
+</script>
+{% endblock %}
+

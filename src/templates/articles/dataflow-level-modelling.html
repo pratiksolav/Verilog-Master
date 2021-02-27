@@ -1,0 +1,320 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Dataflow Level Modelling
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Dataflow Level Modelling</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Dataflow Level Modelling</h1>
+      <hr>
+      <p>As mentioned in one of the previous articles on  <a href="#">Types of Modelling</a> , Dataflow Modelling is a higher level of abstraction than Gate Level Modelling .</p>
+      <p>It resembles a description in form of equations consisting of operands and operators for modelling digital circuits.</p>
+      <p>Since you are already aware of the concept of Dataflow Modelling and its requirements, we can straight away turn towards the details of Dataflow Modelling.</p>    
+    <hr>
+    <h3 id="A" class="font-weight-bold" style="font-size:1.25rem;">Continuous Assignments</h3>
+      <p>A continuous assignment is the most basic statement in dataflow modelling , used to drive the value on a net.The <b>assign</b> statement replaces the gates in the actual circuit and describes the circuit at a higher level of abstraction.</p>
+      <p><b>Syntax --- </b></p>
+      <p><b>assign (net_expression) = </b>[drive_strength] [delay]<b>(expression of different signals and operators or constant values)</b></p>
+      <p>The drive strength is optional but can be specified in terms of strength level of signals. Strength Levels are already discussed in <a href="#">Verilog Basics-1</a>.</p>
+      <p>Default value for drive strength is strong1 and strong0.The delay value is also optional and can be used to specify gate delays.</p>
+      <p><b>Rules--</b></p>
+      <p>1) The left hand side of an assignment must be a net (scalar or vector) or a concatenation of either or both types of nets. It cannot be a scalar or vector register.</p>
+      <p>2) Continuous Assignments are always active i.e. the assignment is evaluated as soon as right hand side operands changes and the value is assigned to the left hand side net.Since, the left hand side quantity is evaluated continuously , hence  it cannot store a value i.e. cannot be a <b>reg</b>.</p>
+      <p>3) The operands on the right hand side  can be registers or nets or function calls. Registers/Nets can be scalars or vectors.</p>
+      <p>4) Delay values can be specified in certain time units. It resembles the delay in assigning the evaluated value. It is very useful in modelling timing behaviour in real circuits.</p>
+      <p>5) Operators are used in the assignments for denoting any kind of operation.</p>
+    <div>
+      <pre class="line-numbers"><code class="language-verilog">/* Continuous assignment, exor_op is a net . in1 and in2 can be net or register */
+assign exor_op = in1 ^ in2;
+        
+// Concatenation of Scalar and Vector Net in LHS.
+        
+assign {c_out , sum [3:0]} = a [3:0] + b [3:0] + c_in ; 
+        
+// Continuous assignment for vector nets
+        
+assign and_op[15:0] = in1_vector[15:0] & in2_vector[15:0];  </code></pre>
+      </div>
+      <br>
+    <p><b>Implicit Continuous Assignment :</b></p>
+    <p>Instead of declaring a net and then writing a continuous assignment , we are provided with a shortcut by which a continuous assignment can be done when it is declared.</p>
+    <p>However, only one implicit continuous assignment can be done as the variable is declared only once.</p>
+    <div>
+      <pre class="line-numbers"><code class="language-verilog">wire in1,in2 ; 
+//Regular Continuous Assignment
+wire exor_op ;
+assign exor_op = in1 ^ in2;
+        
+// Implicit Continuous Assignment
+        
+wire exor_op_implicit = in1 ^ in2;</code></pre>
+      </div>
+     <br>
+     <p><b>Implicit Net Declaration :</b></p>    
+<p>If any signal is used in the left side of the continuous assignment, implicitly a net declaration is inferred for the signal name.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">wire in1,in2 ; 
+assign exor_op = in1 ^ in2;
+/* exor_op was not declared as wire but an implicit wire declaration is done by Simulator */</code></pre>
+  </div>
+<hr>
+<h3 id="B" class="font-weight-bold" style="font-size:1.25rem;">Delays</h3>
+<br>
+<p><b>Regular Assignment Delay :</b></p>
+<p>This method is for assigning the delay value after the keyword <b>assign</b>.</p>
+<p>Any change in values of in1 and in2 will result in a delay of specified time units  before recomputation of the value of in1^in2 , and the result will be assigned to exor_op.</p>
+<p>The delay is termed as inertial delay as an input pulse shorter than the delay of assignment statement does not propagate to the output.</p>
+<p>Hence , the state of input should be constant for at least the delay in the assignment statement to be propagated to output.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">wire in1,in2;
+wire exor_op;
+assign #10 exor_op = in1^in2; // Delay in Continuous Assignment</code></pre>
+  </div>
+  <br>
+  <div class="text-center">
+    <img class="img-fluid" src="{% static "img/gates/impdel.jpg"%}" alt="">
+    <h5 class="text-center">Fig. Timing Diagram Example for Inertial Delay</h5>
+</div>
+<br>
+<p><b>Implicit Continuous Assignment Delay :</b></p>
+<p>The name itself suggests that implicit continuous assignment is used here to specify both delay and assignment on the net.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">wire in1,in2 ; 
+//Regular Continuous Assignment Delay
+wire exor_op ;
+assign #10 exor_op = in1 ^ in2;
+    
+// Implicit Continuous Assignment Delay
+    
+wire #10 exor_op_implicit = in1 ^ in2;</code></pre>
+  </div>
+<br>
+<p><b>Net Declaration Delay :</b></p>
+<p>A delay can be specified on the net during declaration without putting any continuous assignment on the net.</p>
+<p>The delay effect remains the same as regular assignment delay . This type of declaration can also be used in gate level modelling.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">wire in1,in2 ; 
+//Net Declaration Delay
+wire #10 exor_op ;
+assign exor_op = in1 ^ in2;</code></pre>
+  </div>
+  <br>
+  <hr>
+  <h3 id="C" class="font-weight-bold" style="font-size:1.25rem;">Expressions, Operands and Operators</h3>
+<br>
+<p><b>Expressions :</b></p>
+<p>Expressions are constructed out of operators and operands to produce results.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">//Expressions
+a + b;
+in1 ^ in2;
+busin1[8:5] | busin2[8:5];    
+  </code></pre>
+  </div>
+<br>
+<p><b>Operands :</b></p>
+<p>Operands can be of any data types defined in <a href="#">Verilog Basics-1</a> .</p>
+<p>Sometimes, there can be limitations for the data types that can be used for certain expressions.</p>
+<p>Operands can be nets,registers,constants,integers,real numbers,times, etc.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">//value_1 and value_2 are integer operands
+integer value_1 , value_2 ;
+     
+value1 = ~ value2;
+//bitval_1 and bitval_2 are register operands
+reg [7:0]bitval_1,bitval_2 ;
+reg  [2:0]out_val ;
+out_val = bit_val[2:0] + bit_val[2:0];</code></pre>
+  </div>
+<br>
+<p><b>Operators :</b></p>
+<p>Operators act on Operands to produce various results.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">a + b;  // ‘+’ is an operator on operands a and b
+in1 ^ in2; // ‘^’ is an operator on operands in1 and in2
+busin1[8:5] | busin2[8:5]; 
+// ‘|’ is an operator on operands busin1[8:5] and busin2[8:5]</code></pre>
+  </div>
+  <br>
+  <p>There are various types of operators provided in Verilog :</p>
+  <div>
+    <table class="table table-bordered text-center m-auto">
+      <thead class="thead-dark">
+        <tr>    <th>Operator Type</th><th>Operator Symbol</th><th>Operation Performed</th><th>Number of Operands</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="6">Arithmetic</td><td>+</td><td>Add</td><td>Two</td></tr>
+        <tr><td>-</td><td>Subtract</td><td>Two</td></tr>
+        <tr><td>*</td><td>Multiply</td><td>Two</td></tr>
+        <tr><td>/</td><td>Divide</td><td>Two</td></tr>
+        <tr><td>%</td><td>Modulus</td><td>Two</td></tr>
+        <tr><td>**</td><td>Power(Exponent)</td><td>Two</td></tr>
+
+        
+        <tr><td rowspan="4">Relational</td><td>></td><td>Greater than</td><td>Two</td></tr>
+        <tr><td><</td><td>Less than</td><td>Two</td></tr>
+        <tr><td>>=</td><td>Greater than or equal to</td><td>Two</td></tr>
+        <tr><td><=</td><td>Less than or equal to</td><td>Two</td></tr>
+
+        <tr><td rowspan="3">Logical</td><td>!</td><td>Logical Negation</td><td>One</td></tr>
+        <tr><td>&&</td><td>Logical AND</td><td>Two</td></tr>
+	     <tr><td>||</td><td>Logical OR</td><td>Two</td></tr>
+
+       <tr><td rowspan="4">Equality</td><td>==</td><td>Equality</td><td>Two</td></tr>
+       <tr><td>!=</td><td>Inequality</td><td>Two</td></tr>
+	     <tr><td>===</td><td>Equality (Considering Unknown and High Impedance)</td><td>Two</td></tr>
+	     <tr><td>!==</td><td>Inequality (Considering Unknown and High Impedance)</td><td>Two</td></tr>
+
+
+       <tr><td rowspan="6">Reduction</td><td>&</td><td>Reduction AND</td><td>One</td></tr>
+      <tr><td>~&</td><td>Reduction NAND</td><td>One</td></tr>
+	     <tr><td>|</td><td>Reduction OR</td><td>One</td></tr>
+       <tr><td>~|</td><td>Reduction NOR</td><td>One</td></tr>
+	     <tr><td>^</td><td>Reduction XOR</td><td>One</td></tr>
+	     <tr><td>^~ or ~^</td><td>Reduction XNOR</td><td>One</td></tr>
+
+       <tr><td rowspan="5">Bitwise</td><td>~</td><td>Bitwise Negation</td><td>One</td></tr>
+      <tr><td>&</td><td>Bitwise AND</td><td>Two</td></tr>
+	     <tr><td>|</td><td>Bitwise OR</td><td>Two</td></tr>
+	     <tr><td>^</td><td>Bitwise XOR</td><td>Two</td></tr>
+	     <tr><td>^~ or ~^</td><td>Bitwise XNOR</td><td>Two</td></tr>
+
+       <tr><td rowspan="4">Shift</td><td>>></td><td>Right Shift</td><td>Two</td></tr>
+       <tr><td><<</td><td>Left Shift</td><td>Two</td></tr>
+	     <tr><td>>>></td><td>Arithmetic Right Shift</td><td>Two</td></tr>
+	     <tr><td><<<</td><td>Arithmetic Left Shift</td><td>Two</td></tr>
+
+       <tr><td>Concatenation</td><td>{ }</td><td>Concatenate Numbers</td><td>Any number</td></tr>
+       <tr><td>Replication</td><td>{ { } }</td><td>Replicate Numbers</td><td>Any number</td></tr>
+       <tr><td>Conditional</td><td>?:</td><td>Decision Taking</td><td>Three</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <p>Operator Precedence is important in our discussion for the cases where parentheses are not used to separate two operations in an expression .</p>
+<p>The precedence decides which operation needs to be done at the earliest or late.</p>
+<p>The following table gives the precedence  from the highest to the lowest.</p>
+<p>However , it is recommended to use parentheses to remove ambiguity in the expression except in case of unary operation.</p>
+<div class="text-center">
+  <img class="img-fluid" src="{% static "img/gates/df_table.jpg"%}" alt="">
+</div>
+<br>
+<hr>
+<h3 id="D" class="font-weight-bold" style="font-size:1.25rem;">Examples</h3>
+<p>Since  we have discussed all the syntax and other things related to Dataflow Modelling ,we can move forward to write some code in this level of abstraction and describe any simple digital design.</p>
+<p>This would be a great exercise as this would combine various concepts you’ve learned till now to realize something much simpler and powerful.</p>
+<br>
+<p><b>2-to-1 Multiplexer :</b></p>
+<div class="text-center">
+  <img class="img-fluid" src="{% static "img/gates/df_mux.jpg"%}" alt="">
+</div>
+<p>Boolean Equation : ->  out  = ( <b>NOT</b>(s) <b>AND</b> i0 ) <b>OR</b> (s <b>AND</b> i1)</p>
+<p>Since , we are already familiar with the boolean equation for the given multiplexer , so we can write a continuous assignment for describing this design.</p>
+
+<div>
+  <pre class="line-numbers"><code class="language-verilog">// 2-to-1 Multiplexer , Dataflow Modelling , Logic Equation
+module mux_2_to_1 ( out, i0, i1, s);
+// Port declaration for the given diagram 
+output out;
+input i0, i1, s;
+    
+// Logic Equation using Expression 
+assign out = ( ~s & i0 )| ( s & i1 );
+    
+endmodule</code></pre>
+  </div>
+<p>There is also a more concise way of specifying the multiplexer using the conditional operator ( ? : ).</p>
+<p>The code can be written as follows :</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">//2-to-1 Multiplexer , Dataflow Modelling , Conditional Operator
+module mux_2_to_1 ( out, i0, i1, s);
+// Port declaration for the given diagram 
+output out;
+input i0, i1, s;
+    
+//Conditional Operator Usage
+assign out = (s ? i1 : i0) ;
+    
+/*This signifies that when ‘s’ is logical-1 , ‘i1’ is assigned to ‘out’ , otherwise ‘i0’ is assigned to ‘out’ */
+    
+endmodule</code></pre>
+
+  </div>
+
+<br>
+<p><b>1-bit Full Adder :</b></p>
+<div class="text-center">
+  <img class="img-fluid" src="{% static "img/gates/df_add.jpg"%}" alt="">
+</div>
+<p>Boolean Equation :-></p>
+<p>sum = (a <b>XOR</b> b )<b>XOR</b> cin ;</p>
+<p>cout = cin <b>AND</b> (a <b>XOR</b> b) <b>OR</b> (a <b>AND</b> b);</p>
+<p>Since , we are already familiar with the boolean equation for the given full adder, so we can write a continuous assignment for describing this design.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">//1-bit Full Adder , Dataflow Modelling , Logic Equation
+module fulladd ( a, b, cin, sum, cout);
+// Port declaration for the given diagram 
+output sum, cout;
+input a, b, cin;
+    
+// Logic Equation using Expression 
+assign sum = (a ^ b)^cin ;
+assign cout = ( cin & (a ^ b) ) | (a & b) ;
+
+endmodule</code></pre>
+  </div>
+<p>There is another concise way of specifying 1-bit full adder using arithmetic operator and concatenation operator.</p>
+<div>
+  <pre class="line-numbers"><code class="language-verilog">//1-bit Full Adder , Dataflow Modelling , Arithmetic Operator
+module fulladd ( a, b, cin, sum, cout);
+// Port declaration for the given diagram 
+output sum, cout;
+input a, b, cin;
+    
+// Concatenation for Sum and Carry variable 
+// Specify Function directly using Arithmetic Operator
+assign { cout, sum } = a + b + cin ;
+    
+endmodule</code></pre>
+  </div>
+<br>
+
+</div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+    
+        <a href="#A" class="list-group-item list-group-item-action bg-light">Continuous Assignments</a>
+        <a href="#B" class="list-group-item list-group-item-action bg-light">Delays</a>
+        <a href="#C" class="list-group-item list-group-item-action bg-light">Expressions, Operands and Operators</a>
+        <a href="#D" class="list-group-item list-group-item-action bg-light">Examples</a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('dataflowlevel').classList.add('active')
+</script>
+{% endblock %}

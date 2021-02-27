@@ -1,0 +1,80 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+ Types of Modelling
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Types of Modelling</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 class="mt-4" style="font-family:Raleway;">Types of Modelling</h1>
+      <hr>
+      <p id="Intro">As we have discussed earlier, one of the major advantages of Verilog HDL is that we can define our design in any of the four levels of abstraction.</p>
+      <p>So, here we will explore how the complexity of code changes when described in various levels of abstraction and why designers prefer to describe the design at a higher level of abstraction in the case of larger designs.</p>
+      <hr>
+    
+      <h3 id="Gate" class="font-weight-bold" style="font-size:1.25rem;">Gate Level Modelling</h3>
+      <p>In gate level modelling, the design is defined in terms of gates as basic building blocks. The module is implemented in terms of logic gates and interconnections between these gates.It is therefore termed as a low level of abstraction, as the only lower level of abstraction than gate level is the switch level modelling.</p>
+      <p>But the designs at switch level modelling (transistor switches as basic elements) can become pretty complex for even basic digital elements. Hence, gate level modelling is preferred for low levels of abstraction.</p>
+      <p>The design at this level is intuitive for the user because it is possible to see one-to-one correspondence between logic circuit diagrams and their Verilog codes. A change in the value of any input signal of a component activates the component. If two or more components are activated simultaneously, they will perform their actions simultaneously as well.</p>
+      <p>We are already familiar with the Gate Predefined Primitives and how we implement basic logic and transmission gates in Verilog HDL. Also, we’ve got a basic idea how to define a module for any digital system we wish to design.</p>
+      <p>To learn/revise concepts of Gate Primitives, refer <a href="#">Predefined Primitives</a></p>
+      <p>Here, we would like to implement a basic digital system in Gate Level Modelling with the help of these gate primitives.</p>
+      <p>Most logic gates have delays associated with them depending on signal transition (Rise, Fall and Turn Off Delays). Each of these delays can be in three forms: ‘Min’, ‘Max’ and ‘Typical Values’, depending upon the configuration. A user can specify these delays in gate models in Verilog HDL by following a certain syntax. Modelling these gates exactly as per their properties gives us an edge of obtaining practical and reliable results.</p>
+      <p>We’ll be discussing this in depth with examples in <a href="#">Gate-Level Modelling</a>.</p><br>
+<hr>
+      <h3 id="DataFlow" class="font-weight-bold" style="font-size:1.25rem;">Dataflow Level Modelling</h3>
+      <p>For smaller circuits the gate level modelling seems to work fine, as the number of gates is limited and connecting every gate individually is not a big issue. But in complex designs , it is not efficient to follow the gate level modelling as the number of gates is pretty large.</p>
+      <p>To solve this problem, Dataflow Modelling provides a powerful way to implement the design at higher levels of abstraction. The circuit is designed  in terms of how data flows between registers and how the design processes the data. The style of modelling is similar to implementation of Boolean logical equations. It comprises expressions where input signals are assigned to output signals along with some operations to be done.</p>
+      <p>There are a lot of tools developed for converting the final expressions to a gate level implementation, basically getting the final circuit diagram in terms of gates and wires.</p>
+      <p>The most basic statement in dataflow modelling is a continuous assignment. This assignment replaces gates in the circuit implementation.</p>
+      <p>The assignment syntax starts with the keyword <b>‘assign’</b> followed by the signal name which can be either a single signal or a concatenation of different signals.</p>
+      <p><b>Syntax --- </b></p>
+      <p><b>assign (net_expression) =</b>[drive_strength] [delay]<b>(expression of different signals and operators or constant values)</b></p>
+      <p>The drive_strength and delay parameters are optional and are used when real hardware needs to be implemented. In addition to all of this, we also need to know about various types of assignments and operators.</p>
+      <p>This might seem complex, but don’t worry! We’ll be discussing this in depth with relevant examples in <a href="#">Dataflow Level Modelling</a>.</p><br>
+<hr>
+      <h3 id="Behavioural" class="font-weight-bold" style="font-size:1.25rem;">Behavioural Level Modelling</h3>
+      <p>With more and more complexity in digital design, designers need to be able to evaluate the trade-offs of various algorithms and architecture to get the optimum algorithm and architecture in the end. All these things are possible when hardware implementation is designed at an algorithmic level and not with dataflow or logic gates</p>
+      <p>Verilog HDL provides designers the ability to describe the design functionality in an algorithmic manner, basically describing the behaviour of the circuit. The behavioural description is therefore, the highest level of abstraction. The design at this level resembles the C programming language, as a lot of constructs are similar to C language in many ways. The style of modelling is similar to implementation of Truth Tables or similar digital blocks which describe the behaviour of the circuit. It is the closest to a natural language description of the circuit functionality, but at the same time, it is the most difficult to synthesize</p>
+      <p>The basic statements in this type of modelling are termed as Structural Procedures which include the keywords <b>‘always’</b> and <b>‘initial’</b>. These are expressed in terms of blocks which contain behavioural statements. Multiple such behavioural statements can be grouped with keywords <b>‘begin’</b> and <b>‘end’</b>, just like the curly brackets {} in C Language.</p>
+      <p>The behavioural statements are in the form of procedural assignments.</p>
+      <p>Conditional Statements and Loop Statements are also used to represent the behaviour of certain blocks.</p>
+      <p>Sequential Circuits are best modelled in this level of abstraction. It is a very important topic in the learning process of Verilog HDL, and hence is quite lengthy. This is because most of the large-scale designs are based in Behavioural Modelling. The reason is very simple, it describes the design in a much effective and effortless manner.</p>
+      <p>A detailed explanation on Behavioral Modeling is presented in <a href="#">Behavioural Modelling</a></p><br>
+
+    </div>
+  </div>
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+
+        <a href="#Gate" class="list-group-item list-group-item-action bg-light">Gate Level Modelling</a>
+        <a href="#DataFlow" class="list-group-item list-group-item-action bg-light">Dataflow Level Modelling</a>
+        <a href="#Behavioural" class="list-group-item list-group-item-action bg-light">Behavioural Level Modelling</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('typesmodel').classList.add('active')
+</script>
+{% endblock %}

@@ -1,0 +1,265 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}
+  Code Converter - Binary to XS3
+{% endblock %}
+
+{% block content%}
+<section class="breadcrumbs" style="font-family:Montserrat;">
+  <div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Code Converter - Binary to XS3</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+<div class="row my-3" data-aos="fade-up">
+  {% include "sidebar.html" %}
+  <div id="page-content-wrapper" class="col-lg-7 border-left border-right mb-5">
+
+    <div align="justify", class="container-fluid" style="font-family:Lora;">
+      <h1 id="Intro" class="mt-4" style="font-family:Raleway;">Code Converter - Binary to XS3</h1>
+      <hr>
+      <p>The excess-3 (or XS3) code is used to express decimal numbers.</p>
+      <p>It is a self-complementary code and numerical system which has biased representation.</p>
+      <p>It is generally used for arithmetic operations to overcome problems faced while using BCD code.</p>
+      <p>Excess-3 arithmetic uses a different algorithm than a normal non-biased binary positional number system.</p>
+      <p>Excess-3 codes are unweighted and can be obtained by adding 3 to each decimal digit.</p>
+      <p>Further, it can be represented by using a 4-bit binary number for each digit.</p>
+      <p>For direct conversion of a binary number to its excess-3 code equivalent , we can add 0011 to the binary number.</p>
+      <p>The 1’s complement of an excess-3 code is the excess-3 code for the 9’s complement of the decimal number equivalent of the original number.</p>
+      <p>For e.g.</p>
+      <p>Take number =  2 , its excess-3 code is 0101 ;</p>
+      <p>1’s complement of 0101 is ‘1010’  (1111 - 0101) ;</p>
+      <p>‘1010’ is excess-3 code for  decimal number = 7;</p>
+      <p>7 is the 9’s complement for 2 ( 9-2 = 7) ;</p>
+      <p>Hence , Code Converters can be useful in finding the Excess-3 Code Equivalent for the given Binary Number.</p>
+      
+      <div class="text-center">
+        <img class="img-fluid" src="{% static "img/gates/bin_to_xs3.jpg"%}" alt="">
+        <h5 class="text-center">Fig. Block Diagram of Binary to XS3 Code Converter</h5>
+    </div>
+    <hr>
+    <br>
+    <h3 id="TT" class="font-weight-bold" style="font-size:1.25rem;">Truth Table:</h3>
+    <table class="table table-bordered text-center m-auto">
+        <thead class="thead-dark">
+          <tr>
+            <th colspan="4" class="border-right">Binary Code Input</th>
+            <th colspan="4">XS3 Code Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>B<sub>3</sub></th><th>B<sub>2</sub></th><th>B<sub>1</sub></th><th>B<sub>0</sub></th><th>E<sub>3</sub></th><th>E<sub>2</sub></th><th>E<sub>1</sub></th><th>E<sub>0</sub></th></tr>
+          <tr>
+              <th>0</th><th>0</th><th>0</th><th>0</th>
+              <th>0</th><th>0</th><th>1</th><th>1</th>
+        </tr>
+        <tr>
+            <th>0</th><th>0</th><th>0</th><th>1</th>
+            <th>0</th><th>1</th><th>0</th><th>0</th>
+      </tr>
+      <tr>
+        <th>0</th><th>0</th><th>1</th><th>0</th>
+        <th>0</th><th>1</th><th>0</th><th>1</th>
+     </tr>
+     <tr>
+        <th>0</th><th>0</th><th>1</th><th>1</th>
+        <th>0</th><th>1</th><th>1</th><th>0</th>
+     </tr>
+     <tr>
+        <th>0</th><th>1</th><th>0</th><th>0</th>
+        <th>0</th><th>1</th><th>1</th><th>1</th>
+     </tr>
+     <tr>
+        <th>0</th><th>1</th><th>0</th><th>1</th>
+        <th>1</th><th>0</th><th>0</th><th>0</th>
+</tr>
+<tr>
+    <th>0</th><th>1</th><th>1</th><th>0</th>
+    <th>1</th><th>0</th><th>0</th><th>1</th>
+</tr>
+<tr>
+    <th>0</th><th>1</th><th>1</th><th>1</th>
+    <th>1</th><th>0</th><th>1</th><th>0</th>
+</tr>
+<tr>
+                  <th>1</th><th>0</th><th>0</th><th>0</th>
+                  <th>1</th><th>0</th><th>1</th><th>1</th>
+        </tr>
+        <tr>
+            <th>1</th><th>0</th><th>0</th><th>1</th>
+            <th>1</th><th>1</th><th>0</th><th>0</th>
+  </tr>
+  <tr>
+    <th>1</th><th>0</th><th>1</th><th>0</th>
+    <th>1</th><th>1</th><th>0</th><th>1</th>
+</tr>
+<tr>
+    <th>1</th><th>0</th><th>1</th><th>1</th>
+     <th>1</th><th>1</th><th>1</th><th>0</th>
+</tr>
+<tr>
+    <th>1</th><th>1</th><th>0</th><th>0</th>
+    <th>1</th><th>1</th><th>1</th><th>1</th>
+</tr>
+<tr>
+    <th>1</th><th>1</th><th>0</th><th>1</th>
+    <th>X</th><th>X</th><th>X</th><th>X</th>
+</tr>
+<tr>
+    <th>1</th><th>1</th><th>1</th><th>0</th>
+    <th>X</th><th>X</th><th>X</th><th>X</th>
+</tr>
+<th>1</th><th>1</th><th>1</th><th>1</th>
+<th>X</th><th>X</th><th>X</th><th>X</th>
+</tr>
+        </tbody>
+  </table>
+  <br>
+  <p>You can use Karnaugh Maps to solve for XS3 Code Outputs - E<sub>3</sub> , E<sub>2</sub>, E<sub>1</sub>, E<sub>0</sub>.</p>
+    <p>Give it a try.</p>
+  <p>We will obtain Boolean Expression as :</p>
+    
+    <p>E<sub>3</sub> = B<sub>2</sub>.(B<sub>0</sub> + B<sub>1</sub>) + B<sub>3</sub> ;</p>
+    <p>E<sub>2</sub> = (B<sub>2</sub>)'.(B<sub>0</sub> + B<sub>1</sub>) + (B<sub>0</sub>)'.(B<sub>1</sub>)'.B<sub>2</sub>;</p>
+    <p>E<sub>1</sub> = (B<sub>0</sub> &#8853 B<sub>1</sub>)' ;</p>
+    <p>E<sub>0</sub> = (B<sub>0</sub>)' ;</p>
+    
+<hr>
+<h3 id="Code" class="font-weight-bold" style="font-size:1.25rem;">Verilog Codes:</h3><br>
+<p><b>Gate Level:</b></p>
+
+<div>
+<pre class="line-numbers"><code class="language-verilog">module binary_to_xs3_gate(bin , exc);
+    input [3:0]bin;
+    output [3:0]exc;
+    wire [2:0]bin_not;
+    wire w1 ,w2 , w3 , w4;
+    
+    not N0(bin_not[0] , bin[0]);
+    not N1(bin_not[1] , bin[1]);
+    not N2(bin_not[2] , bin[2]);
+    
+    or O1(w1 , bin[1] , bin[0] );
+    and A1(w2 , bin[2] , w1);
+    and A2(w3 , bin_not[2] , w1);
+    and A3(w4 , bin[2] , bin_not[1] , bin_not[0]);
+    
+    or O2(exc[3] , w2 , bin[3]);
+    or O3(exc[2] , w3 , w4);
+    xnor X1(exc[1] , bin[1] , bin[0]);
+    not N3(exc[0] , bin[0] );
+    
+    
+endmodule
+    
+</code></pre>
+</div>
+<br>
+<p><b>Dataflow Level:</b></p>
+<div>
+    <pre class="line-numbers"><code class="language-verilog">module binary_to_xs3_dataflow( bin , exc );
+    input [3:0]bin;
+    output [3:0]exc;
+        
+    assign exc[3] = ( bin[2]&(bin[0] | bin[1]) ) | bin[3] ;
+    assign exc[2] = ( (bin[0] | bin[1])&(~bin[2]) ) | ((~bin[0]) &(~bin[1]) & bin[2]) ;
+    assign exc[1] = ~(bin[1]^bin[0]);
+    assign exc[0] = ~bin[0];
+        
+endmodule
+        
+        
+    </code></pre>
+    </div>
+    <br>
+    <p><b>Behavioural Level:</b></p>
+    <div>
+        <pre class="line-numbers"><code class="language-verilog">module binary_to_xs3_behavioural( bin , exc );
+    input [3:0]bin;
+    output reg [3:0]exc;
+            
+    always@(bin)
+        begin
+            case(bin)
+                4'b0000 : exc = 4'b0011;
+                4'b0001 : exc = 4'b0100;
+                4'b0010 : exc = 4'b0101;
+                4'b0011 : exc = 4'b0110;
+                4'b0100 : exc = 4'b0111;
+                4'b0101 : exc = 4'b1000;
+                4'b0110 : exc = 4'b1001;
+                4'b0111 : exc = 4'b1010;
+                4'b1000 : exc = 4'b1011;
+                4'b1001 : exc = 4'b1100;
+                4'b1010 : exc = 4'b1101;
+                4'b1011 : exc = 4'b1110;
+                4'b1100 : exc = 4'b1111;
+                4'b1101 : exc = 4'bxxxx;
+                4'b1110 : exc = 4'bxxxx;
+                4'b1111 : exc = 4'bxxxx;
+            endcase
+        end
+endmodule
+            
+            
+           </code></pre>
+        </div>
+        <br>
+        <p><b>Testbench Code:</b></p>
+        <div>
+            <pre class="line-numbers"><code class="language-verilog">module binary_to_xs3_tb;
+    reg [3:0]bin;
+    wire [3:0]exc;
+    integer i;
+    binary_to_xs3_gate DUT(bin , exc);// The instantiation depends on the design file
+    //So it can be either binary_to_xs3_dataflow or binary_to_xs3_behavioural
+    
+    initial
+        begin
+            for(i=0 ; i<13 ;i= i+1 )
+            begin
+                bin <= i ; #10;
+            end
+            $finish;
+        end
+                
+endmodule
+                
+                
+             </code></pre>
+            </div>
+            <br>
+            <hr>
+            <h3 id="Sim" class="font-weight-bold" style="font-size:1.25rem;">Simulation Result:</h3>
+            <div class="text-center">
+                <img class="img-fluid" src="{% static "img/gates/bin_to_xs3s.jpg"%}" alt="">
+            </div>
+   
+    </div>
+  </div>
+
+
+  <div id="in-this-article" class="d-none col-lg-2 d-xl-block">
+    <div class="sticky">
+      <h2 class="in-this-article-heading">In this article</h2>
+      <div class="list-group w-75">
+        <a href="#Intro" class="list-group-item list-group-item-action bg-light">Intro</a>
+        <a href="#TT" class="list-group-item list-group-item-action bg-light">Truth Table</a>
+        <a href="#Code" class="list-group-item list-group-item-action bg-light">Verilog Codes</a>
+        <a href="#Sim" class="list-group-item list-group-item-action bg-light">Simulation Result</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('bin_to_xs3').classList.add('active')
+</script>
+{% endblock %}
+
